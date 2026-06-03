@@ -1,0 +1,22 @@
+.gitignoreHELP.md
+target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+.env
+
+# Spring application secrets
+src/main/resources/application.properties
+
