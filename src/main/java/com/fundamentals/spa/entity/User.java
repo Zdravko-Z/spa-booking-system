@@ -1,10 +1,9 @@
 package com.fundamentals.spa.entity;
 
+import com.fundamentals.spa.entity.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,20 +11,24 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "guests")
-public class Guest {
+@Table(name = "users")
+public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     private UUID id;
 
-    @Column(name = "first_name", length = 50, nullable = false)
-    private String firstName;
+    @Column(length = 50, nullable = false, unique = true)
+    private String username;
 
-    @Column(name = "last_name", length = 50, nullable = false)
-    private String lastName;
+    @Column(length = 100, nullable = false, unique = true)
+    private String email;
 
-    @Column(length = 20)
-    private String phone;
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role = UserRole.CLIENT;
 
     @Column(name = "added_at", nullable = false, updatable = false)
     private LocalDateTime addedAt;
@@ -33,13 +36,8 @@ public class Guest {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
-
     @PrePersist
-    protected void onCreate() {
+    protected void onCreate(){
         addedAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
@@ -48,4 +46,5 @@ public class Guest {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
 }
