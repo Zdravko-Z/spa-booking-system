@@ -27,25 +27,8 @@ public class Guest {
     @Column(length = 20)
     private String phone;
 
-    @Column(name = "added_at", nullable = false, updatable = false)
-    private LocalDateTime addedAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-
-    @PrePersist
-    protected void onCreate() {
-        addedAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 }

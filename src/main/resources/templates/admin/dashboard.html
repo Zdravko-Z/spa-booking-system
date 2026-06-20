@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Dashboard — Serenity Spa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<main>
+    <!-- Page header -->
+    <div class="page-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage bookings, treatments, rooms and staff</p>
+    </div>
+    <!-- Alerts -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <!-- Quick links – use .quick-links (existing) + .dashboard-card (new) -->
+    <div class="quick-links dashboard-card">
+        <a th:href="@{/admin/treatments}" class="treatment-card dashboard-card">
+            <span class="icon">💆</span>
+            <span class="label">Treatments</span>
+            <span class="desc">Add, edit, or remove</span>
+        </a>
+        <a th:href="@{/admin/rooms}" class="treatment-card dashboard-card">
+            <span class="icon">🛏️</span>
+            <span class="label">Rooms</span>
+            <span class="desc">Manage rooms & availability</span>
+        </a>
+        <a th:href="@{/admin/staff}" class="treatment-card dashboard-card">
+            <span class="icon">👩‍⚕️</span>
+            <span class="label">Staff</span>
+            <span class="desc">Therapists & specializations</span>
+        </a>
+    </div>
+    <!-- Bookings table -->
+    <h2 class="section-title" style="text-align:left; font-size:1.4rem; margin-bottom:1rem;">All Bookings</h2>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Guest</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Masseuse</th>
+                <th>Room</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td><strong th:text="${booking.confirmationCode}">ABC123</strong></td>
+                <td th:text="${booking.guestDto.firstName + ' ' + booking.guestDto.lastName}">Ana Ivanova</td>
+                <td th:text="${#temporals.format(booking.bookingDate, 'dd MMM yyyy')}">10 Jun 2026</td>
+                <td th:text="${#temporals.format(booking.startTime, 'HH:mm')} + ' – ' + ${#temporals.format(booking.endTime, 'HH:mm')}">10:00 – 11:00</td>
+                <td th:text="${booking.spaStaffDto.firstName}"></td>
+                <td th:text="${booking.spaRoomDto.name}">The Lotus Room</td>
+                <td th:text="'€' + ${booking.totalPrice}">€60.00</td>
+                <td>
+                        <span class="badge"
+                              th:classappend="${booking.status.name() == 'PENDING' ? 'badge-pending' :
+                                               booking.status.name() == 'CANCELLED' ? 'badge-cancelled' : 'badge-active'}"
+                              th:text="${booking.status}">PENDING</span>
+                </td>
+                <td>
+                    <form th:if="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}"
+                          th:action="@{/admin/bookings/cancel/{id}(id=${booking.id})}" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Cancel this booking?')">Cancel</button>
+                    </form>
+                    <span th:unless="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</span>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(bookings)}">
+                <td colspan="8" class="empty-state">No bookings found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head><title>My Bookings</title></head>
+<body>
+<section layout:fragment="content">
+
+    <div class="page-header">
+        <h1>My Bookings</h1>
+        <p>View and manage your spa appointments</p>
+    </div>
+
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Confirmation</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Treatments</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td>
+                        <span style="font-family:'Cormorant Garamond',serif; font-size:1rem; letter-spacing:0.05em;"
+                              th:text="${booking.confirmationCode}">ABC12345</span>
+                </td>
+                <td th:text="${#temporals.format(booking.bookingDate, 'dd MMM yyyy')}">10 Jun 2026</td>
+                <td th:text="${booking.startTime} + ' – ' + ${booking.endTime}">10:00 – 11:00</td>
+                <td>
+                        <span th:each="bt, iter : ${booking.bookingTreatments}">
+                            <span th:text="${bt.treatment.name}">Massage</span>
+                            <span th:if="${!iter.last}">, </span>
+                        </span>
+                </td>
+                <td th:text="'€' + ${booking.totalPrice}">€60.00</td>
+                <td>
+                        <span class="badge"
+                              th:classappend="${booking.status == 'PENDING' ? 'badge-pending' :
+                                               booking.status == 'CONFIRMED' ? 'badge-confirmed' : 'badge-cancelled'}"
+                              th:text="${booking.status}">PENDING</span>
+                </td>
+                <td>
+                    <form th:if="${booking.status != 'CANCELLED'}"
+                          th:action="@{/bookings/cancel/{id}(id=${booking.id})}"
+                          method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Cancel this booking?')">
+                            Cancel
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(bookings)}">
+                <td colspan="7" style="text-align:center; color:var(--muted); padding:2.5rem;">
+                    You have no bookings yet.
+                    <a th:href="@{/bookings/create}" style="color:var(--gold); text-decoration:none;">
+                        Book a treatment
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+</body>
+</html>

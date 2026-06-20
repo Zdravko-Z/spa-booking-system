@@ -1,23 +1,17 @@
 package com.fundamentals.spa.service;
 
 import com.fundamentals.spa.dto.SpaBookingDto;
-import com.fundamentals.spa.dto.SpaRoomDto;
+import com.fundamentals.spa.dto.SpaBookingForm;
 import com.fundamentals.spa.entity.*;
 import com.fundamentals.spa.entity.enums.BookingStatus;
 import com.fundamentals.spa.entity.enums.UserRole;
-import com.fundamentals.spa.exception.InvalidBookingStatusException;
-import com.fundamentals.spa.exception.SpaBookingNotFoundException;
-import com.fundamentals.spa.exception.SpaRoomNotFoundException;
-import com.fundamentals.spa.exception.UnauthorizedActionException;
+import com.fundamentals.spa.exception.*;
 import com.fundamentals.spa.mapper.SpaBookingMapper;
-import com.fundamentals.spa.mapper.SpaTreatmentMapper;
 import com.fundamentals.spa.repository.SpaBookingRepository;
 import com.fundamentals.spa.repository.SpaBookingTreatmentRepository;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -31,10 +25,10 @@ import java.util.UUID;
 public class SpaBookingService {
     private final SpaBookingRepository spaBookingRepository;
     private final GuestService guestService;
-    private final UserService userService;
     private final SpaTreatmentService spaTreatmentService;
     private final SpaRoomService spaRoomService;
     private final SpaBookingTreatmentRepository spaBookingTreatmentRepository;
+    private final SpaStaffService spaStaffService;
 
     @Transactional(readOnly = true)
     public List<SpaBookingDto> getAll(){
@@ -43,41 +37,35 @@ public class SpaBookingService {
 
     @Transactional(readOnly = true)
     public SpaBookingDto getById(UUID id){
-       return SpaBookingMapper.toDto(spaBookingRepository.findById(id).orElseThrow(() -> new SpaRoomNotFoundException("Booking not found")));
+        return SpaBookingMapper.toDto(spaBookingRepository.findById(id).orElseThrow(() -> new SpaBookingNotFoundException("Booking not found")));
     }
 
-    public List<SpaBookingDto> getAllForGuest(HttpSession session){
-        UUID userId = (UUID) session.getAttribute("user_id");
+    @Transactional(readOnly = true)
+    public List<SpaBookingDto> getAllForGuest(UUID userId){
         Guest guest = guestService.getByUser(userId);
-        return spaBookingRepository.getAllByGuest(guest.getId()).stream().map(SpaBookingMapper::toDto).toList();
+        if (guest == null){
+            return new ArrayList<>();
+        }
+        return spaBookingRepository.getAllByGuest(guest).stream().map(SpaBookingMapper::toDto).toList();
     }
 
-    public void cancel(UUID bookingId, UUID userId){
-        Guest guest = guestService.getByUser(userId);
+    public void cancel(UUID bookingId, UUID userId, UserRole role){
         SpaBooking booking = spaBookingRepository.findById(bookingId)
                 .orElseThrow(() -> new SpaBookingNotFoundException("Booking not found"));
-
-        if (!booking.getGuest().getId().equals(guest.getId()) &&
-        userService.getById(userId).getRole() != UserRole.ADMIN){
-            throw new UnauthorizedActionException("You cannot cancel this booking");
+        if (role == UserRole.CLIENT){
+            Guest guest = guestService.getByUser(userId);
+            if (!booking.getGuest().getId().equals(guest.getId())){
+                throw new UnauthorizedActionException("You cannot cancel this booking");
+            }
         }
 
         if (booking.getStatus() == BookingStatus.CANCELLED){
             throw new InvalidBookingStatusException("Booking is already cancelled");
+        }else if(booking.getBookingDate().isBefore(LocalDate.now())){
+            throw new SpaException("Booking already complete");
         }
 
         booking.setStatus(BookingStatus.CANCELLED);
-    }
-
-    public void confirm(UUID bookingId){
-        SpaBooking booking = spaBookingRepository.findById(bookingId)
-                .orElseThrow(() -> new SpaBookingNotFoundException("Booking not found"));
-
-        if (booking.getStatus() != BookingStatus.PENDING){
-            throw new InvalidBookingStatusException("This booking cannot be confirmed");
-        }
-
-        booking.setStatus(BookingStatus.CONFIRMED);
     }
 
     @Transactional(readOnly = true)
@@ -91,7 +79,7 @@ public class SpaBookingService {
     private List<String> generateSlots() {
         List<String> slots = new ArrayList<>();
         LocalTime time = LocalTime.of(9, 0);
-        LocalTime closing = LocalTime.of(18, 0);
+        LocalTime closing = LocalTime.of(20, 0);
         while (time.isBefore(closing)) {
             slots.add(time.toString());
             time = time.plusMinutes(30);
@@ -99,13 +87,15 @@ public class SpaBookingService {
         return slots;
     }
 
+    public void create(SpaBookingForm dto, UUID user){
+        if (dto.getTreatmentIds() == null || dto.getTreatmentIds().isEmpty()){
+            throw new InvalidBookingStatusException("Please select at least one treatment");
+        }
 
-    public void create(SpaBookingDto dto, UUID user){
         Guest guest = guestService.getByUser(user);
 
-        List<SpaTreatment> treatments = dto.getTreatments().stream()
-                .map(spaTreatmentService::getById)
-                .map(SpaTreatmentMapper::toEntity)
+        List<SpaTreatment> treatments = dto.getTreatmentIds().stream()
+                .map(spaTreatmentService::getEntityById)
                 .toList();
 
         int totalMinutes = treatments.stream().mapToInt(SpaTreatment::getDurationMinutes)
@@ -117,10 +107,25 @@ public class SpaBookingService {
                 .getAvailableRoom(dto.getBookingDate(), dto.getStartTime(), endTime)
                 .stream().findFirst().orElseThrow(() -> new SpaRoomNotFoundException("No available rooms"));
 
+        SpaStaff staff = null;
+        if (dto.getStaffId() != null) {
+            staff = spaStaffService.getEntityById(dto.getStaffId());
+            List<SpaStaff> available = spaStaffService.getAvailableEntities(dto.getBookingDate(), dto.getStartTime(), endTime);
+            if (!available.contains(staff)) {
+                throw new SpaStaffNotFoundException("Selected therapist is not available for this time");
+            }
+        } else {
+            List<SpaStaff> available = spaStaffService.getAvailableEntities(dto.getBookingDate(), dto.getStartTime(), endTime);
+            if (!available.isEmpty()) {
+                staff = available.get(0);
+            }
+        }
+
         SpaBooking booking = new SpaBooking();
         booking.setConfirmationCode(generateConfirmationCode());
         booking.setGuest(guest);
         booking.setSpaRoom(room);
+        booking.setStaff(staff);
         booking.setBookingDate(dto.getBookingDate());
         booking.setStartTime(dto.getStartTime());
         booking.setEndTime(endTime);

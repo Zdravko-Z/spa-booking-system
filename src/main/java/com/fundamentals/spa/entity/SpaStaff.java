@@ -19,24 +19,13 @@ public class SpaStaff {
     @Column(length = 100)
     private String specialization;
 
-    @Column(name = "added_at", nullable = false, updatable = false)
-    private LocalDateTime addedAt;
+    @Column(name = "first_name",length = 50, nullable = false)
+    private String firstName;
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    @Column(name = "last_name",length = 50, nullable = false)
+    private String lastName;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
-
-    @PrePersist
-    protected void onCreate() {
-        addedAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 }

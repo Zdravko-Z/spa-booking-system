@@ -14,6 +14,7 @@ public class SpaRoomMapper {
 
     public static SpaRoomDto toDto(SpaRoom room){
         return SpaRoomDto.builder()
+                .id(room.getId())
                 .name(room.getName())
                 .capacity(room.getCapacity())
                 .status(room.getStatus())

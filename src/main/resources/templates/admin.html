@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head><title>Admin Dashboard</title></head>
+<body>
+<section layout:fragment="content">
+
+    <div class="page-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage bookings, treatments, rooms and staff</p>
+    </div>
+
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+
+    <!-- QUICK LINKS -->
+    <div style="display:flex; gap:1rem; margin-bottom:2.5rem; flex-wrap:wrap;">
+        <a th:href="@{/treatments}" class="btn btn-outline">Manage Treatments</a>
+        <a th:href="@{/admin/rooms}" class="btn btn-outline">Manage Rooms</a>
+        <a th:href="@{/admin/staff}" class="btn btn-outline">Manage Staff</a>
+    </div>
+
+    <!-- ALL BOOKINGS -->
+    <h2 style="font-family:'Cormorant Garamond',serif; font-weight:300; font-size:1.6rem; margin-bottom:1.2rem;">
+        All Bookings
+    </h2>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Guest</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Room</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td style="font-family:'Cormorant Garamond',serif;"
+                    th:text="${booking.confirmationCode}">ABC12345</td>
+                <td th:text="${booking.guest.firstName + ' ' + booking.guest.lastName}">Ana Ivanova</td>
+                <td th:text="${#temporals.format(booking.bookingDate, 'dd MMM yyyy')}">10 Jun 2026</td>
+                <td th:text="${booking.startTime} + ' – ' + ${booking.endTime}">10:00 – 11:00</td>
+                <td th:text="${booking.room.name}">The Lotus Room</td>
+                <td th:text="'€' + ${booking.totalPrice}">€60.00</td>
+                <td>
+                        <span class="badge"
+                              th:classappend="${booking.status == 'PENDING' ? 'badge-pending' :
+                                               booking.status == 'CONFIRMED' ? 'badge-confirmed' : 'badge-cancelled'}"
+                              th:text="${booking.status}">PENDING</span>
+                </td>
+                <td style="display:flex; gap:0.5rem;">
+                    <form th:if="${booking.status == 'PENDING'}"
+                          th:action="@{/admin/bookings/confirm/{id}(id=${booking.id})}"
+                          method="post">
+                        <button type="submit" class="btn btn-gold btn-sm">Confirm</button>
+                    </form>
+                    <form th:if="${booking.status != 'CANCELLED'}"
+                          th:action="@{/admin/bookings/cancel/{id}(id=${booking.id})}"
+                          method="post">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Cancel this booking?')">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(bookings)}">
+                <td colspan="8" style="text-align:center; color:var(--muted); padding:2.5rem;">
+                    No bookings found.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,5 @@
+finish the error page - center some of the text, red border all around the message and bigger letters
+
+fix the step 2 treatment select area
+
+add not null for staff in a booking and add it to the migration file

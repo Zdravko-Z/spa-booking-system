@@ -1,0 +1,5 @@
+fix the add/edit/delete treatment - the functionality should not appear in the treatments page
+but in admin/treatments page or something like that (the guest should not see it)
+another way is only if your role is admin to see buttons
+
+admin can have 2 subpages - bookings and treatments

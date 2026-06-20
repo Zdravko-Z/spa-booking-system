@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Serenity Spa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+    <!-- HERO -->
+    <div class="hero">
+        <p class="hero-eyebrow">Welcome to</p>
+        <h1>Serenity Spa</h1>
+        <p class="hero-sub">
+            A sanctuary of calm. Expert therapists, curated treatments,
+            and an atmosphere designed entirely around your wellbeing.
+        </p>
+    </div>
+
+    <!-- TREATMENTS -->
+    <h2 class="section-title">Our Treatments</h2>
+    <div class="treatment-grid">
+        <div th:each="t : ${treatments}" class="treatment-card">
+            <h3 th:text="${t.name}">Treatment Name</h3>
+            <p th:text="${t.description}">Description</p>
+            <div class="treatment-meta">
+                <span th:text="${t.durationMinutes} + ' min'">60 min</span>
+                &nbsp;—&nbsp;
+                <span th:text="'€' + ${t.price}">€60.00</span>
+            </div>
+        </div>
+        <div th:if="${#lists.isEmpty(treatments)}" class="empty-state" style="grid-column:1/-1;">
+            <p>No treatments available at the moment.</p>
+        </div>
+    </div>
+
+    <!-- INFO CARDS -->
+    <div class="info-grid">
+        <div class="info-card">
+            <p class="info-card-label">Opening Hours</p>
+            <p>
+                Monday – Friday &nbsp;&nbsp; 09:00 – 20:00<br/>
+                Saturday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10:00 – 18:00<br/>
+                Sunday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Closed
+            </p>
+        </div>
+        <div class="info-card">
+            <p class="info-card-label">Location</p>
+            <p>
+                123 Wellness Boulevard<br/>
+                Varna, Bulgaria<br/>
+                +359 88 000 0000
+            </p>
+        </div>
+        <div class="info-card">
+            <p class="info-card-label">Our Promise</p>
+            <p>
+                Every treatment is tailored to you.<br/>
+                Your comfort is our priority.<br/>
+                All prices include EUR VAT.
+            </p>
+        </div>
+    </div>
+</main>
+
+<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+</body>
+</html>

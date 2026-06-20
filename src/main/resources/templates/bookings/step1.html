@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Book a Treatment — Serenity Spa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main>
+    <div class="form-card">
+        <h1 class="form-title">Book a Treatment</h1>
+        <p class="form-subtitle">Step 1 of 2 — Select a date</p>
+
+        <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+        <form th:action="@{/bookings/create/select-slots}" method="post">
+            <div class="form-group">
+                <label for="bookingDate">Date</label>
+                <input type="date" id="bookingDate" name="bookingDate"
+                       th:min="${today}" required/>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">
+                See Available Times
+            </button>
+        </form>
+    </div>
+</main>
+
+<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+</body>
+</html>

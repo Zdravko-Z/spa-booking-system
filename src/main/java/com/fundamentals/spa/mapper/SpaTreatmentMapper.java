@@ -7,10 +7,12 @@ import com.fundamentals.spa.entity.SpaTreatment;
 public class SpaTreatmentMapper {
     public static SpaTreatmentDto toDto(SpaTreatment treatment){
         return SpaTreatmentDto.builder()
+                .id(treatment.getId())
                 .name(treatment.getName())
                 .description(treatment.getDescription())
                 .durationMinutes(treatment.getDurationMinutes())
                 .price(treatment.getPrice())
+                .deleted(treatment.isDeleted())
                 .build();
     }
 

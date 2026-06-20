@@ -7,6 +7,8 @@ import java.util.UUID;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RegisterDto {
     private UUID id;
     @NotBlank(message = "User must not be blank")
@@ -19,7 +21,7 @@ public class RegisterDto {
     private String email;
 
     @NotBlank(message = "Password must not be blank")
-    @Size(min = 6, max = 20, message = "Password must not be more than 20 characters")
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
     @NotBlank(message = "Please confirm your password")

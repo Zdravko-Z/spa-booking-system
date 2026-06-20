@@ -1,10 +1,9 @@
 package com.fundamentals.spa.mapper;
 
-import com.fundamentals.spa.dto.LoginDto;
+import com.fundamentals.spa.dto.AuthDto;
 import com.fundamentals.spa.dto.RegisterDto;
 import com.fundamentals.spa.entity.User;
 import com.fundamentals.spa.entity.enums.UserRole;
-import lombok.*;
 
 public class UserMapper {
     public static User toEntity(RegisterDto dto){
@@ -15,17 +14,10 @@ public class UserMapper {
         return user;
     }
 
-    public static RegisterDto toRegisterDto(User user){
-        return RegisterDto.builder()
+    public static AuthDto toAuthDto(User user){
+        return AuthDto.builder()
                 .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .build();
-    }
-
-    public static LoginDto toLoginDto(User user){
-        return LoginDto.builder()
-                .username(user.getUsername())
+                .role(user.getRole())
                 .build();
     }
 }

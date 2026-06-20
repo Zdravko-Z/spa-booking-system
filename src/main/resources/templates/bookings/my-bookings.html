@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Bookings — Serenity Spa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<main>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>My Bookings</h1>
+            <p>View and manage your upcoming treatments</p>
+        </div>
+        <!-- Success/Error Alerts -->
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(bookingList)}" class="empty-state">
+            <p>You have no bookings yet.</p>
+            <a th:href="@{/bookings/create}" class="btn btn-primary" style="margin-top: 0.5rem;">Book Now</a>
+        </div>
+        <!-- Bookings Table -->
+        <div th:if="not ${#lists.isEmpty(bookingList)}">
+            <div class="table-wrapper">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Confirmation</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Total</th>
+                        <th>Masseuse</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="booking : ${bookingList}" th:classappend="${booking.status.name() == 'CANCELLED' ? 'row-deleted' : ''}">
+                        <td><strong th:text="${booking.confirmationCode}"></strong></td>
+                        <td th:text="${#temporals.format(booking.bookingDate, 'dd MMM yyyy')}"></td>
+                        <td th:text="${#temporals.format(booking.startTime, 'HH:mm')} + ' – ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></td>
+                        <td th:text="'€' + ${booking.totalPrice}"></td>
+                        <td th:text="${booking.spaStaffDto.firstName}"></td>
+                        <td>
+                                <span class="badge"
+                                      th:classappend="${'badge-' + booking.status.name().toLowerCase()}"
+                                      th:text="${booking.status}"></span>
+                        </td>
+                        <td class="td-actions">
+                            <form th:if="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}"
+                                  th:action="@{/bookings/cancel/{id}(id=${booking.id})}" method="post"
+                                  class="inline-form">
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Cancel this booking?')">Cancel</button>
+                            </form>
+                            <span th:unless="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+</body>
+</html>

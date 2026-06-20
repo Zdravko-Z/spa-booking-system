@@ -28,20 +28,6 @@ public class SpaTreatment {
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
 
-    @Column(name = "added_at", nullable = false, updatable = false)
-    private LocalDateTime addedAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        addedAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @Column(nullable = false)
+    private boolean deleted = false;
 }

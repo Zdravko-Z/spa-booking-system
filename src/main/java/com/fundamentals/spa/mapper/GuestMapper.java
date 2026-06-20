@@ -18,12 +18,11 @@ public class GuestMapper {
     }
 
     public static GuestDto toDto(Guest guest){
-//        GuestDto dto = new GuestDto();
         return GuestDto.builder()
                 .firstName(guest.getFirstName())
                 .lastName(guest.getLastName())
                 .phone(guest.getPhone())
-                .user(guest.getUser())
+                .userId(guest.getUser().getId())
                 .build();
     }
 }

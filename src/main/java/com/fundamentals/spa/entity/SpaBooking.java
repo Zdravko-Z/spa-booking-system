@@ -31,8 +31,8 @@ public class SpaBooking {
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
 
-    @Column(name = "end_date", nullable = false)
-    private LocalTime endDate;
+    @Column(name = "end_time", nullable = false)
+    private LocalTime endTime;
 
     @Column(name = "duration_minutes", nullable = false)
     private int durationMinutes;
@@ -64,12 +64,7 @@ public class SpaBooking {
     @ManyToOne
     @JoinColumn(name = "spa_staff_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    private User staff;
-
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private User createdBy;
+    private SpaStaff staff;
 
     @PrePersist
     protected void onCreate() {

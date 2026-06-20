@@ -23,28 +23,10 @@ public class User {
     @Column(length = 100, nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(length = 60, nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role = UserRole.CLIENT;
-
-    @Column(name = "added_at", nullable = false, updatable = false)
-    private LocalDateTime addedAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate(){
-        addedAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
 }

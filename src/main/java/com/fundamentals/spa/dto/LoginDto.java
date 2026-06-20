@@ -1,10 +1,11 @@
 package com.fundamentals.spa.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginDto {
     private String username;
     private String password;
