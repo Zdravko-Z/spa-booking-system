@@ -38,6 +38,5 @@ public class SpaBookingDto {
 
     private SpaRoomDto spaRoomDto;
 
-    @NotNull
     private SpaStaffDto spaStaffDto;
 }
