@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Register — Serenity Spa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -49,13 +50,23 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" th:field="*{password}" placeholder="••••••••"/>
+                    <div class="password-field">
+                        <input type="password" id="password" th:field="*{password}" placeholder="••••••••"/>
+                        <span class="toggle-password" data-target="password">
+                                    <i class="fa-regular fa-eye fa-fw"></i>
+                        </span>
+                    </div>
                     <span class="field-error" th:if="${#fields.hasErrors('password')}"
                           th:errors="*{password}"></span>
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" th:field="*{confirmPassword}" placeholder="••••••••"/>
+                    <div class="password-field">
+                        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="••••••••"/>
+                        <span class="toggle-password" data-target="confirmPassword">
+                            <i class="fa-regular fa-eye fa-fw"></i>
+                        </span>
+                    </div>
                     <span class="field-error" th:if="${#fields.hasErrors('confirmPassword')}"
                           th:errors="*{confirmPassword}"></span>
                 </div>
@@ -71,5 +82,6 @@
     </div>
 </main>
 <footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<script th:src="@{/js/password-toggle.js}"></script>
 </body>
 </html>

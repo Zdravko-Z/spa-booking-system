@@ -14,12 +14,9 @@
         <p class="form-subtitle">
             Step 2 of 2 —
             <span th:text="${#temporals.format(bookingDate, 'dd MMM yyyy')}"></span>
-            &nbsp;
             <a th:href="@{/bookings/create}">Change date</a>
         </p>
-
         <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
-
         <form th:action="@{/bookings/create}" th:object="${bookingForm}" method="post">
             <input type="hidden" name="bookingDate" th:value="${bookingDate}"/>
             <div class="form-group">

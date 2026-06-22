@@ -1,5 +1,11 @@
-fix the add/edit/delete treatment - the functionality should not appear in the treatments page
-but in admin/treatments page or something like that (the guest should not see it)
-another way is only if your role is admin to see buttons
+for completed bookings to show status completed and to remove the cancel button
 
-admin can have 2 subpages - bookings and treatments
+to be able to choose the staff first
+
+functionality client to be able to edit bookings
+
+sort bookings by date and status
+
+treatments to be clickable for something(maybe to just enlarge it and see the full descriptiona)
+
+option to select room

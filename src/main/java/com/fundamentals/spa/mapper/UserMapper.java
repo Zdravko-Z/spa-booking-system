@@ -8,8 +8,8 @@ import com.fundamentals.spa.entity.enums.UserRole;
 public class UserMapper {
     public static User toEntity(RegisterDto dto){
         User user = new User();
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
+        user.setUsername(dto.getUsername().trim());
+        user.setEmail(dto.getEmail().trim());
         user.setRole(UserRole.CLIENT);
         return user;
     }

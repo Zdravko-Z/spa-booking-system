@@ -28,13 +28,14 @@ public class SpaTreatmentService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "treatments")
     public SpaTreatment getEntityById(UUID id) {
         return spaTreatmentRepository.findById(id)
                 .orElseThrow(() -> new SpaTreatmentNotFoundException("Treatment not found"));
     }
 
     @Transactional(readOnly = true)
-    @Cacheable("treatments")
+    @Cacheable(value = "treatments", key = "'notDeleted'")
     public List<SpaTreatmentDto> getAllNotDeleted() {
         return spaTreatmentRepository.findAllByDeletedFalse()
                 .stream()
@@ -48,7 +49,7 @@ public class SpaTreatmentService {
                 .orElseThrow(() -> new SpaTreatmentNotFoundException("Treatment not found"));
     }
 
-    @Cacheable("treatments")
+    @Cacheable(value = "treatments", key = "'all'")
     @Transactional(readOnly = true)
     public List<SpaTreatmentDto> getAll() {
         return spaTreatmentRepository.findAll().stream().map(SpaTreatmentMapper::toDto).toList();

@@ -6,6 +6,8 @@ import com.fundamentals.spa.exception.SpaRoomNotFoundException;
 import com.fundamentals.spa.mapper.SpaRoomMapper;
 import com.fundamentals.spa.repository.SpaRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
@@ -20,15 +22,18 @@ public class SpaRoomService {
     private final SpaRoomRepository spaRoomRepository;
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "rooms")
     public List<SpaRoomDto> getAll(){
         return spaRoomRepository.findAll().stream().map(SpaRoomMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "rooms")
     public SpaRoomDto getById(UUID id){
         return SpaRoomMapper.toDto(spaRoomRepository.findById(id).orElseThrow(() -> new SpaRoomNotFoundException("Room not found")));
     }
 
+    @CacheEvict(value = "rooms", allEntries = true)
     public void update(SpaRoomDto dto, UUID id){
         SpaRoom room = spaRoomRepository.findById(id).orElseThrow(() -> new SpaRoomNotFoundException("Room not found"));
 

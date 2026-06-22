@@ -18,8 +18,8 @@ public class SpaTreatmentMapper {
 
     public static SpaTreatment toEntity(SpaTreatmentDto dto){
         SpaTreatment spaTreatment = new SpaTreatment();
-        spaTreatment.setName(dto.getName());
-        spaTreatment.setDescription(dto.getDescription());
+        spaTreatment.setName(dto.getName().trim());
+        spaTreatment.setDescription(dto.getDescription().trim());
         spaTreatment.setDurationMinutes(dto.getDurationMinutes());
         spaTreatment.setPrice(dto.getPrice());
 

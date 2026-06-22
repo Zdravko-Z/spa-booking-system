@@ -37,7 +37,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         String endpoint = request.getRequestURI();
 
         if (endpoint.startsWith("/css") ||
-                endpoint.startsWith("/images")) {
+                endpoint.startsWith("/images") ||
+                        endpoint.startsWith("/js")) {
             return true;
         }
 
