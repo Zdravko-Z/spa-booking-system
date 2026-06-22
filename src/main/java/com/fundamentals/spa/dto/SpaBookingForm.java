@@ -17,11 +17,15 @@ public class SpaBookingForm {
     @NotNull(message = "Date is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate bookingDate;
+
     @NotNull(message = "Start time is required")
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime startTime;
+
     @NotEmpty(message = "Please select at least one treatment")
     private List<UUID> treatmentIds;
+
     private UUID staffId;
+
     private String notes;
 }

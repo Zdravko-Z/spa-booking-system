@@ -13,12 +13,10 @@
         <div class="form-card">
             <h1 class="form-title">Edit Staff Member</h1>
             <p class="form-subtitle">Update staff details and specialization</p>
-            <!-- Error alert -->
             <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
             <form th:action="@{/admin/staff/edit/{id}(id=${staffDto.id})}"
                   th:object="${staffDto}"
                   method="post">
-                <!-- Hidden id field -->
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
                     <label>First Name</label>

@@ -69,6 +69,9 @@ public class AuthController {
             AuthDto authData = userService.login(loginDto);
             session.setAttribute("user_id", authData.getId());
             session.setAttribute("user_role", authData.getRole());
+            if (authData.getRole() == UserRole.ADMIN){
+                return "redirect:/admin/dashboard";
+            }
             return "redirect:/bookings/my-bookings";
         } catch (UsernameOrPasswordMismatch | SpaUserNotFound e) {
             model.addAttribute("error", e.getMessage());

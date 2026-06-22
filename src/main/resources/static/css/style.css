@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap');
 
-/* ── Variables ── */
 :root {
     --cream:      #f7f4ef;
     --dark:       #1c1917;
@@ -44,10 +43,8 @@
     color: var(--muted);
 }
 
-/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Base ── */
 body {
     font-family: 'Jost', sans-serif;
     background: var(--cream);
@@ -61,7 +58,6 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
-/* ── Navigation ── */
 nav {
     background: var(--dark);
     padding: 1rem 2.5rem;
@@ -106,7 +102,6 @@ nav {
 
 .nav-btn:hover { background: var(--gold-light) !important; }
 
-/* ── Main content wrapper ── */
 main {
     flex: 1;
     max-width: 1080px;
@@ -115,7 +110,6 @@ main {
     width: 100%;
 }
 
-/* ── Footer ── */
 footer {
     background: var(--dark);
     color: #57534e;
@@ -126,7 +120,6 @@ footer {
     margin-top: auto;
 }
 
-/* ── Page header ── */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -145,7 +138,6 @@ footer {
 
 .page-header p { color: var(--muted); font-size: 0.88rem; margin-top: 0.3rem; }
 
-/* ── Buttons ── */
 .btn {
     display: inline-block;
     padding: 0.65rem 1.6rem;
@@ -171,18 +163,16 @@ footer {
 
 .btn-outline:hover { background: var(--dark); color: var(--gold-light); }
 
-/* ── Alerts ── */
 .alert {
     padding: 0.85rem 1.1rem;
     margin-bottom: 1.5rem;
     border-left: 3px solid;
-    font-size: 0.86rem;
+    font-size: 1rem;
 }
 
 .alert-error   { border-color: var(--error);   background: var(--error-bg);   color: var(--error); }
 .alert-success { border-color: var(--success);  background: var(--success-bg); color: var(--success); }
 
-/* ── Forms ── */
 .form-card {
     background: var(--white);
     border: 1px solid var(--border);
@@ -191,7 +181,7 @@ footer {
     margin: 0 auto;
 }
 
-.form-card-wide { max-width: 620px; }
+.form-card-wide { max-width: 700px; }
 
 .form-title {
     font-family: 'Cormorant Garamond', serif;
@@ -254,7 +244,6 @@ footer {
 
 .form-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
 
-/* ── Tables ── */
 .table-wrapper { overflow-x: auto; }
 
 table { width: 100%; border-collapse: collapse; background: var(--white); }
@@ -281,7 +270,6 @@ tbody tr:hover { background: #faf8f5; }
 
 .td-actions { display: flex; gap: 0.5rem; align-items: center; }
 
-/* ── Badges ── */
 .badge {
     display: inline-block;
     padding: 0.22rem 0.7rem;
@@ -298,7 +286,6 @@ tbody tr:hover { background: #faf8f5; }
 .badge-available   { background: #d1fae5; color: #065f46; }
 .badge-maintenance { background: #fef3c7; color: #92400e; }
 
-/* ── Checkbox group (booking treatments) ── */
 .checkbox-group {
     padding: 0.7rem 0;
     border-bottom: 1px solid var(--border);
@@ -329,12 +316,60 @@ tbody tr:hover { background: #faf8f5; }
     font-size: 0.82rem;
  }
 
-/* ── Hero (index page) ── */
-.hero {
-    text-align: center;
-    padding: 5rem 0 4rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 4rem;
+.treatment-checkbox-hidden {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.treatment-selectable {
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    transition: border-color 0.3s ease-in-out, background 0.2s;
+    background: var(--white);
+}
+
+.treatment-selectable:hover {
+    border-color: var(--gold-light);
+    background: #fcf9f5;
+}
+
+#label{
+margin-bottom:unset;
+}
+
+.treatment-label {
+    display: block;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    width: 100%;
+    position: relative;
+    margin-bottom: unset;
+}
+
+.treatment-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.treatment-content strong {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.treatment-content span {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.treatment-checkbox-hidden:checked + .treatment-label {
+    border-color: var(--gold);
+    background: var(--cream);
+    display: block;
 }
 
 .hero-eyebrow {
@@ -364,7 +399,6 @@ tbody tr:hover { background: #faf8f5; }
 
 .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-/* ── Info cards (index page) ── */
 .info-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -388,7 +422,6 @@ tbody tr:hover { background: #faf8f5; }
 
 .info-card p { font-size: 0.87rem; line-height: 2; color: var(--muted); }
 
-/* ── Treatment cards (index page) ── */
 .treatment-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -416,7 +449,6 @@ tbody tr:hover { background: #faf8f5; }
 
 .treatment-meta { font-size: 0.82rem; color: var(--dark); }
 
-/* ── Section title ── */
 .section-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.8rem;
@@ -426,7 +458,6 @@ tbody tr:hover { background: #faf8f5; }
     letter-spacing: 0.05em;
 }
 
-/* ── Quick links (admin dashboard) ── */
 .quick-links {
     display: flex;
     gap: 1rem;
@@ -434,7 +465,6 @@ tbody tr:hover { background: #faf8f5; }
     margin-bottom: 2.5rem;
 }
 
-/* ── Empty state ── */
 .empty-state {
     text-align: center;
     padding: 3rem 0;
@@ -443,7 +473,6 @@ tbody tr:hover { background: #faf8f5; }
 
 .empty-state a { color: var(--gold); }
 
-/* ── Total display (booking) ── */
 .booking-total {
     background: var(--cream);
     border: 1px solid var(--border);
@@ -466,7 +495,6 @@ tbody tr:hover { background: #faf8f5; }
     font-size: 1.6rem;
 }
 
-/* ── Error page ── */
 .error-page {
     text-align: center;
     padding: 5rem 0;
@@ -481,11 +509,10 @@ tbody tr:hover { background: #faf8f5; }
 
 .error-page p { color: var(--muted); margin-bottom: 2rem; }
 
-/* ── Responsive ── */
 @media (max-width: 700px) {
     .info-grid { grid-template-columns: 1fr; }
     .form-row  { grid-template-columns: 1fr; }
     .hero h1   { font-size: 2.5rem; }
     nav        { padding: 1rem; }
     .nav-links { gap: 1rem; }
-}f
+}

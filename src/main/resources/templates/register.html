@@ -8,16 +8,12 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-
 <main>
     <div class="form-card form-card-wide">
         <h1 class="form-title">Create Account</h1>
         <p class="form-subtitle">Join us and start booking treatments</p>
-
         <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
-
         <form th:action="@{/register}" th:object="${registerDto}" method="post">
-
             <div class="form-row">
                 <div class="form-group">
                     <label>First Name</label>
@@ -32,28 +28,24 @@
                           th:errors="*{lastName}"></span>
                 </div>
             </div>
-
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" th:field="*{username}" placeholder="ana.ivanova"/>
                 <span class="field-error" th:if="${#fields.hasErrors('username')}"
                       th:errors="*{username}"></span>
             </div>
-
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" th:field="*{email}" placeholder="ana@example.com"/>
                 <span class="field-error" th:if="${#fields.hasErrors('email')}"
                       th:errors="*{email}"></span>
             </div>
-
             <div class="form-group">
                 <label>Phone</label>
                 <input type="text" th:field="*{phone}" placeholder="0888123456"/>
                 <span class="field-error" th:if="${#fields.hasErrors('phone')}"
                       th:errors="*{phone}"></span>
             </div>
-
             <div class="form-row">
                 <div class="form-group">
                     <label>Password</label>
@@ -68,12 +60,10 @@
                           th:errors="*{confirmPassword}"></span>
                 </div>
             </div>
-
             <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;">
                 Create Account
             </button>
         </form>
-
         <p style="text-align:center; margin-top:1.5rem; font-size:0.84rem; color:var(--muted);">
             Already have an account?
             <a th:href="@{/login}" style="color:var(--gold);">Sign in</a>

@@ -1,5 +1,19 @@
-finish the error page - center some of the text, red border all around the message and bigger letters
+for completed bookings to show status completed and to remove the cancel button
 
-fix the step 2 treatment select area
+remove the checkbox and make the whole treatment selectable
 
-add not null for staff in a booking and add it to the migration file
+set range for treatment creation on description and price
+
+Parolata da se vijda s oko
+
+1vo da mojesh da izberesh 1vo chovek (ako iskash) za booking-a
+
+Uvelichi UI - 125% v tvoq sluchai
+
+Edit na rezervaciqta ot klient
+
+Sortirai po data i da mogat da se vijdat samo aktivnite (klient)
+
+Ogranichi vsichki description (test)
+
+da mojesh da cuknesh thereatment ot index-a ili neshto takova nz napushen sum

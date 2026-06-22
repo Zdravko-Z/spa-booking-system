@@ -1,7 +1,6 @@
 package com.fundamentals.spa.controller;
 
 import com.fundamentals.spa.dto.SpaTreatmentDto;
-import com.fundamentals.spa.entity.SpaTreatment;
 import com.fundamentals.spa.service.SpaTreatmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

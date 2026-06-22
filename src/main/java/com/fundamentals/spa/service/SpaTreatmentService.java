@@ -80,6 +80,7 @@ public class SpaTreatmentService {
         }
     }
 
+    @CacheEvict(value = "treatments", allEntries = true)
     public void restore(UUID id) {
         SpaTreatment treatment = spaTreatmentRepository.findById(id)
                 .orElseThrow(() -> new SpaTreatmentNotFoundException("Treatment not found"));

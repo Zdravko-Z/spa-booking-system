@@ -9,19 +9,15 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
-    <!-- Page Header -->
     <div class="page-header">
         <h1>Treatments</h1>
         <a th:href="@{/admin/treatments/create}" class="btn btn-primary">Add New</a>
     </div>
-    <!-- Alerts -->
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
-    <!-- Empty state -->
     <div th:if="${#lists.isEmpty(treatments)}" class="empty-state">
         <p>No treatments found. <a th:href="@{/admin/treatments/create}">Add one</a></p>
     </div>
-    <!-- Table -->
     <div th:if="not ${#lists.isEmpty(treatments)}" class="table-wrapper">
         <table class="table table-striped">
             <thead>

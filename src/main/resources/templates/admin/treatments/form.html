@@ -13,12 +13,10 @@
         <div class="form-card">
             <h1 class="form-title" th:text="${treatmentDto.id == null ? 'Add Treatment' : 'Edit Treatment'}">Add Treatment</h1>
             <p class="form-subtitle" th:text="${treatmentDto.id == null ? 'Create a new treatment' : 'Update treatment details'}">Create a new treatment</p>
-            <!-- Error alert -->
             <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
             <form th:action="${treatmentDto.id == null ? '/admin/treatments/create' : '/admin/treatments/edit/' + treatmentDto.id}"
                   th:object="${treatmentDto}"
                   method="post">
-                <!-- Hidden id for edit -->
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
                     <label>Name</label>

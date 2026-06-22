@@ -9,15 +9,12 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
-    <!-- Page header -->
     <div class="page-header">
         <h1>Admin Dashboard</h1>
         <p>Manage bookings, treatments, rooms and staff</p>
     </div>
-    <!-- Alerts -->
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
-    <!-- Quick links – use .quick-links (existing) + .dashboard-card (new) -->
     <div class="quick-links dashboard-card">
         <a th:href="@{/admin/treatments}" class="treatment-card dashboard-card">
             <span class="icon">💆</span>
@@ -35,7 +32,6 @@
             <span class="desc">Therapists & specializations</span>
         </a>
     </div>
-    <!-- Bookings table -->
     <h2 class="section-title" style="text-align:left; font-size:1.4rem; margin-bottom:1rem;">All Bookings</h2>
     <div class="table-wrapper">
         <table>
@@ -53,7 +49,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="booking : ${bookings}">
+            <tr th:each="booking : ${bookings}" th:classappend="${booking.status.name() == 'CANCELLED'} ? 'row-deleted' : ''">
                 <td><strong th:text="${booking.confirmationCode}">ABC123</strong></td>
                 <td th:text="${booking.guestDto.firstName + ' ' + booking.guestDto.lastName}">Ana Ivanova</td>
                 <td th:text="${#temporals.format(booking.bookingDate, 'dd MMM yyyy')}">10 Jun 2026</td>
@@ -69,7 +65,7 @@
                 </td>
                 <td>
                     <form th:if="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}"
-                          th:action="@{/admin/bookings/cancel/{id}(id=${booking.id})}" method="post">
+                          th:action="@{/bookings/cancel/{id}(id=${booking.id})}" method="post">
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Cancel this booking?')">Cancel</button>
                     </form>
                     <span th:unless="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</span>

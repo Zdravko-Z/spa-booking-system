@@ -10,20 +10,16 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="container">
-        <!-- Page Header -->
         <div class="page-header">
             <h1>My Bookings</h1>
             <p>View and manage your upcoming treatments</p>
         </div>
-        <!-- Success/Error Alerts -->
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
-        <!-- Empty State -->
         <div th:if="${#lists.isEmpty(bookingList)}" class="empty-state">
             <p>You have no bookings yet.</p>
             <a th:href="@{/bookings/create}" class="btn btn-primary" style="margin-top: 0.5rem;">Book Now</a>
         </div>
-        <!-- Bookings Table -->
         <div th:if="not ${#lists.isEmpty(bookingList)}">
             <div class="table-wrapper">
                 <table class="table table-striped">

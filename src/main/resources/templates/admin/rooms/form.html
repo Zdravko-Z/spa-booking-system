@@ -13,12 +13,10 @@
         <div class="form-card">
             <h1 class="form-title">Edit Room</h1>
             <p class="form-subtitle">Update room details and availability</p>
-            <!-- Error alert -->
             <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
             <form th:action="@{/admin/rooms/edit/{id}(id=${roomDto.id})}"
                   th:object="${roomDto}"
                   method="post">
-                <!-- Hidden id field -->
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
                     <label>Name</label>

@@ -8,7 +8,6 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-
 <main>
     <div class="form-card form-card-wide">
         <h1 class="form-title">Book a Treatment</h1>
@@ -22,11 +21,7 @@
         <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
 
         <form th:action="@{/bookings/create}" th:object="${bookingForm}" method="post">
-
-            <!-- Hidden date from step 1 -->
             <input type="hidden" name="bookingDate" th:value="${bookingDate}"/>
-
-            <!-- Time slot -->
             <div class="form-group">
                 <label for="startTime">Available Time</label>
                 <select id="startTime" th:field="*{startTime}" required>
@@ -37,29 +32,28 @@
                 <span class="field-error" th:if="${#fields.hasErrors('startTime')}"
                       th:errors="*{startTime}"></span>
             </div>
-
-            <!-- Treatments -->
             <div class="form-group">
                 <label>Select Treatments</label>
                 <div th:if="${#lists.isEmpty(treatments)}" class="empty-state">
                     <p>No treatments available right now.</p>
                 </div>
-                <div th:each="treatment : ${treatments}" class="checkbox-group">
-                    <label th:for="${'t-' + treatment.id}">
-                        <input class="checkbox input" type="checkbox"
-                               name="treatmentIds"
-                               th:value="${treatment.id}"
-                               th:id="${'t-' + treatment.id}"/>
-                        <strong th:text="${treatment.name}"></strong>
-                        <span th:text="${treatment.durationMinutes} + ' min — €' + ${treatment.price}"></span>
-                        <span th:text="${treatment.description}"></span>
+                <div th:each="treatment : ${treatments}" class="treatment-selectable">
+                    <input type="checkbox"
+                           name="treatmentIds"
+                           th:value="${treatment.id}"
+                           th:id="${'t-' + treatment.id}"
+                           class="treatment-checkbox-hidden"/>
+                    <label id="label" th:for="${'t-' + treatment.id}" class="treatment-label">
+                        <div class="treatment-content">
+                            <strong th:text="${treatment.name}"></strong>
+                            <span th:text="${treatment.durationMinutes} + ' min — €' + ${treatment.price}"></span>
+                            <span th:text="${treatment.description}"></span>
+                        </div>
                     </label>
                 </div>
                 <span class="field-error" th:if="${#fields.hasErrors('treatmentIds')}"
                       th:errors="*{treatmentIds}"></span>
             </div>
-
-            <!-- Staff -->
             <div class="form-group">
                 <label for="staffId">Therapist (optional)</label>
                 <select id="staffId" th:field="*{staffId}">
@@ -71,21 +65,17 @@
                     </option>
                 </select>
             </div>
-
-            <!-- Notes -->
             <div class="form-group">
                 <label for="notes">Notes (optional)</label>
                 <textarea id="notes" th:field="*{notes}"
                           placeholder="Any preferences or special requests..."></textarea>
             </div>
-
             <button type="submit" class="btn btn-primary" style="width:100%;">
                 Confirm Booking
             </button>
         </form>
     </div>
 </main>
-
 <footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

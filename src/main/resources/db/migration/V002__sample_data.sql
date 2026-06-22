@@ -53,7 +53,6 @@ SET @hot_stone_id   = (SELECT id FROM spa_treatments WHERE name = 'Hot Stone The
 SET @aroma_id       = (SELECT id FROM spa_treatments WHERE name = 'Aromatherapy');
 SET @reflex_id      = (SELECT id FROM spa_treatments WHERE name = 'Reflexology');
 
--- Spa bookings
 INSERT INTO spa_bookings (
     id, confirmation_code, guest_id, spa_room_id, spa_staff_id,
     booking_date, start_time, end_time, duration_minutes,
@@ -63,19 +62,18 @@ INSERT INTO spa_bookings (
  '2026-07-10', '10:00:00', '11:30:00', 90, 85.00, 'PENDING',
  'Please use extra warm stones', NOW(), NOW()),
 
-('c1d2e3f4-5a6b-4c7d-8e9f-0a1b2c3d4e60', 'ZDR00002', @zdravko_guest_id, @stone_id, NULL,
+('c1d2e3f4-5a6b-4c7d-8e9f-0a1b2c3d4e60', 'ZDR00002', @zdravko_guest_id, @stone_id, @ivan_staff_id,
  '2026-07-05', '14:00:00', '15:00:00', 60, 65.00, 'CANCELLED',
- NULL, NOW(), NOW()),
+ '2026-07-09', NOW(), NOW()),
 
 ('c1d2e3f4-5a6b-4c7d-8e9f-0a1b2c3d4e61', 'MAR00001', @maria_guest_id, @stone_id, @ivan_staff_id,
  '2026-07-15', '09:00:00', '10:45:00', 105, 115.00, 'PENDING',
- NULL, NOW(), NOW());
+ '2026-06-23', NOW(), NOW());
 
 SET @zdrav_booking1 = (SELECT id FROM spa_bookings WHERE confirmation_code = 'ZDR00001');
 SET @zdrav_booking2 = (SELECT id FROM spa_bookings WHERE confirmation_code = 'ZDR00002');
 SET @maria_booking1 = (SELECT id FROM spa_bookings WHERE confirmation_code = 'MAR00001');
 
--- Booking-treatment links
 INSERT INTO spa_booking_treatments (id, booking_id, treatment_id, price_at_booking) VALUES
 ('d1e2f3a4-5b6c-4d7e-8f9a-0b1c2d3e4f5a', @zdrav_booking1, @hot_stone_id,   85.00),
 ('d1e2f3a4-5b6c-4d7e-8f9a-0b1c2d3e4f5b', @zdrav_booking2, @deep_tissue_id, 65.00),

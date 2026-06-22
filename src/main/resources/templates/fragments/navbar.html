@@ -5,16 +5,12 @@
     <a th:href="@{/}" class="nav-brand">SERENITY SPA</a>
     <div class="nav-links">
         <a th:href="@{/}">Home</a>
-
         <a th:if="${session.user_id != null and session.user_role != null and session.user_role.name() != 'ADMIN'}"
            th:href="@{/bookings/create}">Book Now</a>
-
         <a th:if="${session.user_id != null and session.user_role != null and session.user_role.name() != 'ADMIN'}"
            th:href="@{/bookings/my-bookings}">My Bookings</a>
-
         <a th:if="${session.user_id != null and session.user_role != null and session.user_role.name() == 'ADMIN'}"
            th:href="@{/admin/dashboard}">Dashboard</a>
-
         <a th:if="${session.user_id == null}" th:href="@{/login}">Login</a>
         <a th:if="${session.user_id == null}" th:href="@{/register}" class="nav-btn">Register</a>
         <a th:if="${session.user_id != null}" th:href="@{/logout}">Logout</a>

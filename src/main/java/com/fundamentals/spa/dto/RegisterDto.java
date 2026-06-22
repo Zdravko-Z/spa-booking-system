@@ -9,6 +9,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class RegisterDto {
     private UUID id;
     @NotBlank(message = "User must not be blank")

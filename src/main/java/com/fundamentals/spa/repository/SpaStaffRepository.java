@@ -18,11 +18,11 @@ public interface SpaStaffRepository extends JpaRepository<SpaStaff, UUID> {
                         SELECT b.staff FROM SpaBooking b
                         WHERE b.bookingDate = :bookingDate
                         AND b.startTime < :endTime
-                        AND b.endTime > :startDate
+                        AND b.endTime > :startTime
                         AND b.status <> 'CANCELLED'
                 )
             """)
-    List<SpaStaff> getAllAvailable(@Param("date") LocalDate bookingDate,
+    List<SpaStaff> getAllAvailable(@Param("bookingDate") LocalDate bookingDate,
                                    @Param("startTime") LocalTime startDate,
                                    @Param("endTime") LocalTime endTime);
 }

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,7 +61,7 @@ public class SpaBooking {
     private SpaRoom spaRoom;
 
     @ManyToOne
-    @JoinColumn(name = "spa_staff_id")
+    @JoinColumn(name = "spa_staff_id", nullable = false)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private SpaStaff staff;
 

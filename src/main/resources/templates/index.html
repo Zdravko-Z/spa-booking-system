@@ -8,9 +8,7 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-
 <main>
-    <!-- HERO -->
     <div class="hero">
         <p class="hero-eyebrow">Welcome to</p>
         <h1>Serenity Spa</h1>
@@ -19,8 +17,6 @@
             and an atmosphere designed entirely around your wellbeing.
         </p>
     </div>
-
-    <!-- TREATMENTS -->
     <h2 class="section-title">Our Treatments</h2>
     <div class="treatment-grid">
         <div th:each="t : ${treatments}" class="treatment-card">
@@ -36,8 +32,6 @@
             <p>No treatments available at the moment.</p>
         </div>
     </div>
-
-    <!-- INFO CARDS -->
     <div class="info-grid">
         <div class="info-card">
             <p class="info-card-label">Opening Hours</p>
@@ -65,7 +59,6 @@
         </div>
     </div>
 </main>
-
 <footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

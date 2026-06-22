@@ -3,7 +3,6 @@ package com.fundamentals.spa.service;
 import com.fundamentals.spa.dto.AuthDto;
 import com.fundamentals.spa.dto.LoginDto;
 import com.fundamentals.spa.exception.EmailAlreadyUsedException;
-import com.fundamentals.spa.exception.EmailNotPresent;
 import com.fundamentals.spa.exception.SpaUserNotFound;
 import com.fundamentals.spa.exception.UsernameOrPasswordMismatch;
 import com.fundamentals.spa.mapper.UserMapper;

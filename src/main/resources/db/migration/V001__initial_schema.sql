@@ -55,10 +55,10 @@ CREATE TABLE spa_bookings (
     updated_at DATETIME NOT NULL,
     guest_id UUID NOT NULL,
     spa_room_id UUID NOT NULL,
-    spa_staff_id UUID,
+    spa_staff_id UUID NOT NULL,
     FOREIGN KEY (guest_id) REFERENCES guests(id),
     FOREIGN KEY (spa_room_id) REFERENCES spa_rooms(id),
-    FOREIGN KEY (spa_staff_id) REFERENCES spa_staff(id) ON DELETE SET NULL
+    FOREIGN KEY (spa_staff_id) REFERENCES spa_staff(id)
 );
 
 CREATE TABLE spa_booking_treatments (
