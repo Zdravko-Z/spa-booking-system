@@ -16,7 +16,3 @@ target/
 *.iml
 *.ipr
 .env
-
-# Spring application secrets
-src/main/resources/application.properties
-
