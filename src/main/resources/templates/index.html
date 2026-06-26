@@ -16,7 +16,8 @@
             A sanctuary of calm. Expert therapists, curated treatments,
             and an atmosphere designed entirely around your wellbeing.
         </p>
-        <div class="hero-actions">
+        <div th:if="${session.user_role.name() != 'ADMIN'}"
+             class="hero-actions">
             <a class="hero-btn" th:href="@{/bookings/create}">Book Now</a>
         </div>
     </div>
