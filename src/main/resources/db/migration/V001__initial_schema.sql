@@ -51,8 +51,8 @@ CREATE TABLE spa_bookings (
     total_price DECIMAL(10, 2) NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
     notes TEXT,
-    added_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    added_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL,
     guest_id UUID NOT NULL,
     spa_room_id UUID NOT NULL,
     spa_staff_id UUID NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE spa_booking_treatments (
     price_at_booking DECIMAL(10, 2) NOT NULL,
     booking_id UUID NOT NULL,
     treatment_id UUID NOT NULL,
-    UNIQUE KEY uq_booking_treatment (booking_id, treatment_id),
+    CONSTRAINT uq_booking_treatment UNIQUE (booking_id, treatment_id),
     FOREIGN KEY (booking_id)   REFERENCES spa_bookings(id)   ON DELETE CASCADE,
     FOREIGN KEY (treatment_id) REFERENCES spa_treatments(id)
 );
