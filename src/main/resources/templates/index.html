@@ -16,7 +16,7 @@
             A sanctuary of calm. Expert therapists, curated treatments,
             and an atmosphere designed entirely around your wellbeing.
         </p>
-        <div th:if="${session.user_role.name() != 'ADMIN'}"
+        <div th:unless="${session.user_role == T(com.fundamentals.spa.entity.enums.UserRole).ADMIN}"
              class="hero-actions">
             <a class="hero-btn" th:href="@{/bookings/create}">Book Now</a>
         </div>

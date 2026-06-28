@@ -17,9 +17,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     private static final List<String> PUBLIC_PATHs = List.of(
             "/",
             "/login",
-            "/register",
-            "/treatments"
-            );
+            "/register");
 
     private static final List<String> ADMIN_PATHS = List.of(
             "/admin/dashboard",
