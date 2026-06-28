@@ -12,7 +12,7 @@ Spring Data JPA
 
 Spring Security Crypto (BCrypt password hashing)
 
-MariaDB
+PostgreSQL
 
 Flyway
 
