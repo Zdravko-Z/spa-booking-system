@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Book a Treatment — Serenity Spa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <title>Book a Treatment — Serenity Spa</title>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -18,8 +19,24 @@
         <form th:action="@{/bookings/create/select-slots}" method="post">
             <div class="form-group">
                 <label for="bookingDate">Date</label>
-                <input type="date" id="bookingDate" name="bookingDate"
-                       th:min="${today}" required/>
+                <input type="text" id="bookingDate" name="bookingDate" th:min="${today}" placeholder="Select a date"
+                       required/>
+                <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                <script>
+                    flatpickr("#bookingDate", {
+                        minDate: "today",
+                        disable: [
+                            function(date) {
+                                return date.getDay() === 0;
+                            }
+                        ],
+                        dateFormat: "Y-m-d",
+                        altInput: true,
+                        altFormat: "d M Y",
+                        theme: "custom",
+                        disableMobile: true
+                    });
+                </script>
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%;">
                 See Available Times

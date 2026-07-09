@@ -35,16 +35,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="booking : ${bookingList}" th:classappend="${booking.status.name() == 'CANCELLED' ? 'row-deleted' : ''}">
+                    <tr th:each="booking : ${bookingList}"
+                        th:classappend="${booking.status.name() == 'CANCELLED' ? 'row-deleted' : ''}">
                         <td><strong th:text="${booking.confirmationCode}"></strong></td>
                         <td th:text="${#temporals.format(booking.bookingDate, 'dd MMM yyyy')}"></td>
                         <td th:text="${#temporals.format(booking.startTime, 'HH:mm')} + ' – ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></td>
                         <td th:text="'€' + ${booking.totalPrice}"></td>
-                        <td th:text="${booking.spaStaffDto.firstName}"></td>
                         <td>
-                                <span class="badge"
-                                      th:classappend="${'badge-' + booking.status.name().toLowerCase()}"
-                                      th:text="${booking.status}"></span>
+                            <span th:if="${booking.staffFirstName != null}"
+                                  th:text="${booking.staffFirstName + ' ' + booking.staffLastName}">
+                            </span>
+                            <span th:unless="${booking.staffFirstName != null}" class="text-muted">Not assigned</span>
+                        </td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${'badge-' + booking.status.name().toLowerCase()}"
+                                  th:text="${booking.status}"></span>
                         </td>
                         <td class="td-actions">
                             <form th:if="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}"
@@ -53,7 +59,7 @@
                                 <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Cancel this booking?')">Cancel</button>
                             </form>
-                            <span th:unless="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</span>
+                            <span th:unless="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}"></span>
                         </td>
                     </tr>
                     </tbody>

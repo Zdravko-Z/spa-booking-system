@@ -7,6 +7,7 @@ import com.fundamentals.spa.mapper.SpaTreatmentMapper;
 import com.fundamentals.spa.repository.SpaBookingTreatmentRepository;
 import com.fundamentals.spa.repository.SpaTreatmentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,6 +27,9 @@ public class SpaTreatmentService {
     public void create(SpaTreatmentDto dto) {
         SpaTreatment spaTreatment = SpaTreatmentMapper.toEntity(dto);
         spaTreatmentRepository.save(spaTreatment);
+
+        log.info("Treatment {} created", spaTreatment.getId());
+
     }
 
     @Transactional(readOnly = true)
@@ -64,6 +69,8 @@ public class SpaTreatmentService {
         treatment.setPrice(dto.getPrice());
         treatment.setDurationMinutes(dto.getDurationMinutes());
         treatment.setDescription(dto.getDescription());
+
+        log.info("Treatment {} updated", id);
     }
 
     @CacheEvict(value = "treatments", allEntries = true)
@@ -76,8 +83,10 @@ public class SpaTreatmentService {
             SpaTreatment treatment = spaTreatmentRepository.findById(id)
                     .orElseThrow(() -> new SpaTreatmentNotFoundException("Treatment not found"));
             treatment.setDeleted(true);
+            log.info("Treatment soft-deleted {}", id);
         }else {
             spaTreatmentRepository.deleteById(id);
+            log.info("Treatment deleted {}", id);
         }
     }
 
@@ -86,5 +95,6 @@ public class SpaTreatmentService {
         SpaTreatment treatment = spaTreatmentRepository.findById(id)
                 .orElseThrow(() -> new SpaTreatmentNotFoundException("Treatment not found"));
         treatment.setDeleted(false);
+        log.info("Treatment restored {}", id);
     }
 }

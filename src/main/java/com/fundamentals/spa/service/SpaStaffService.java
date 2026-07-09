@@ -6,6 +6,7 @@ import com.fundamentals.spa.exception.SpaStaffNotFoundException;
 import com.fundamentals.spa.mapper.SpaStaffMapper;
 import com.fundamentals.spa.repository.SpaStaffRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -42,6 +44,8 @@ public class SpaStaffService {
         staff.setFirstName(dto.getFirstName());
         staff.setLastName(dto.getLastName());
         staff.setSpecialization(dto.getSpecialization());
+
+        log.info("Staff {} updated", id);
     }
 
     @Transactional(readOnly = true)

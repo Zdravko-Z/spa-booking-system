@@ -10,11 +10,13 @@ import com.fundamentals.spa.dto.RegisterDto;
 import com.fundamentals.spa.entity.User;
 import com.fundamentals.spa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class UserService {
         User user = UserMapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(user);
+        log.info("User registered {}", dto.getId());
         return user.getId();
     }
 
@@ -45,6 +48,7 @@ public class UserService {
         if (!passwordCheck(loginDto.getPassword(), foundUser.getPassword())){
             throw new UsernameOrPasswordMismatch("Username or password is wrong");
         }
+        log.info("User logged in {}", loginDto.getUsername());
         return UserMapper.toAuthDto(foundUser);
     }
 

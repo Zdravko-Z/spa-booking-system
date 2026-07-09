@@ -1,6 +1,6 @@
 package com.fundamentals.spa.controller;
 
-import com.fundamentals.spa.dto.SpaBookingDto;
+import com.fundamentals.spa.dto.AllBookings;
 import com.fundamentals.spa.dto.SpaBookingForm;
 import com.fundamentals.spa.entity.enums.UserRole;
 import com.fundamentals.spa.exception.SpaException;
@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +34,7 @@ public class BookingController {
     public String myBookings(HttpSession session, Model model){
         UUID userId = (UUID) session.getAttribute("user_id");
         try {
-            List<SpaBookingDto> bookingList = spaBookingService.getAllForGuest(userId);
+            List<AllBookings> bookingList = spaBookingService.getAllForGuest(userId);
             model.addAttribute("bookingList", bookingList);
         }catch (SpaException e){
             model.addAttribute("error", "Guest not found");
@@ -65,7 +67,7 @@ public class BookingController {
     @PostMapping("/create/select-slots")
     public String selectSlots(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")
                               LocalDate bookingDate, Model model){
-        if (bookingDate.isBefore(LocalDate.now())){
+        if (bookingDate.isBefore(LocalDate.now()) || bookingDate.getDayOfWeek() == DayOfWeek.SUNDAY){
             model.addAttribute("today", LocalDate.now());
             model.addAttribute("error", "Please select a valid date");
             return "bookings/step1";

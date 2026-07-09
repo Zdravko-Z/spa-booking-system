@@ -1,5 +1,6 @@
 package com.fundamentals.spa.controller;
 
+import com.fundamentals.spa.dto.AllBookings;
 import com.fundamentals.spa.dto.SpaBookingDto;
 import com.fundamentals.spa.service.SpaBookingService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class AdminDashboardController {
 
     @GetMapping("/dashboard")
     public String allBookings(Model model){
-        List<SpaBookingDto> bookingList = spaBookingService.getAll();
+        List<AllBookings> bookingList = spaBookingService.getAll();
         model.addAttribute("bookings", bookingList);
         return "admin/dashboard";
     }

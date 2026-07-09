@@ -23,26 +23,6 @@
     color: var(--muted);
 }
 
-.dashboard-card {
-    align-items: center;
-    text-align: center;
-    justify-content: space-around;
-}
-
-.dashboard-card .icon {
-    font-size: 1.32rem;
-}
-
-.dashboard-card .label {
-    font-weight: 500;
-    font-size: 1.1rem;
-}
-
-.dashboard-card .desc {
-    font-size: 0.88rem;
-    color: var(--muted);
-}
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -104,7 +84,7 @@ nav {
 
 main {
     flex: 1;
-    max-width: 1188px;
+    max-width: 1250px;
     margin: 0 auto;
     padding: 3.3rem 1.65rem;
     width: 100%;
@@ -159,7 +139,7 @@ footer {
 .btn-outline   { background: transparent;    color: var(--dark); border: 1px solid var(--dark); }
 .btn-danger    { background: var(--error);   color: var(--white); }
 .btn-secondary { background: #e0dbd2;        color: var(--dark); }
-.btn-sm        { padding: 0.4rem 1rem; font-size: 0.8rem; }
+.btn-sm        { padding: 0.9rem 1rem; font-size: 0.8rem; }
 
 .btn-outline:hover { background: var(--dark); color: var(--gold-light); }
 
@@ -244,7 +224,7 @@ footer {
 
 .form-actions { display: flex; gap: 1.1rem; margin-top: 1.65rem; }
 
-.table-wrapper { overflow-x: auto; }
+.table-wrapper { overflow-x: auto; border-radius: 7px}
 
 table { width: 100%; border-collapse: collapse; background: var(--white); }
 
@@ -264,11 +244,17 @@ tbody td {
     border-bottom: 1px solid var(--border);
     font-size: 0.97rem;
     vertical-align: middle;
+    white-space: nowrap;
 }
 
 tbody tr:hover { background: #faf8f5; }
 
-.td-actions { display: flex; gap: 0.55rem; align-items: center; }
+.td-actions {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0.55rem;
+    align-items: center;
+}
 
 .badge {
     display: inline-block;
@@ -277,6 +263,7 @@ tbody tr:hover { background: #faf8f5; }
     letter-spacing: 0.07em;
     text-transform: uppercase;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 .badge-pending   { background: #fef3c7; color: #92400e; }
@@ -285,6 +272,7 @@ tbody tr:hover { background: #faf8f5; }
 .badge-deleted   { background: #fee2e2; color: #991b1b; }
 .badge-available   { background: #d1fae5; color: #065f46; }
 .badge-maintenance { background: #fef3c7; color: #92400e; }
+.badge-completed { background: #28a745; color: #fff; }
 
 .checkbox-group {
     padding: 0.77rem 0;
@@ -437,6 +425,7 @@ margin-bottom:unset;
     padding: 2.2rem;
     background: var(--white);
     border: 1px solid var(--border);
+    border-radius: 15px;
 }
 
 .info-card-label {
@@ -461,6 +450,7 @@ margin-bottom:unset;
     border: 1px solid var(--border);
     padding: 1.76rem;
     transition: border-color 0.2s;
+    border-radius: 15px;
 }
 
 .treatment-card:hover { border-color: var(--gold); }
@@ -475,6 +465,27 @@ margin-bottom:unset;
 .treatment-card p { color: var(--muted); font-size: 0.91rem; line-height: 1.7; margin-bottom: 0.9rem; }
 
 .treatment-meta { font-size: 0.9rem; color: var(--dark); }
+
+.dashboard-card {
+    align-items: center;
+    text-align: center;
+    justify-content: space-around;
+    border-radius: 7px;
+}
+
+.dashboard-card .icon {
+    font-size: 1.32rem;
+}
+
+.dashboard-card .label {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.dashboard-card .desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+}
 
 .section-title {
     font-family: 'Cormorant Garamond', serif;
@@ -556,14 +567,6 @@ margin-bottom:unset;
     opacity: 1;
 }
 
-@media (max-width: 700px) {
-    .info-grid { grid-template-columns: 1fr; }
-    .form-row  { grid-template-columns: 1fr; }
-    .hero h1   { font-size: 2.5rem; }
-    nav        { padding: 1rem; }
-    .nav-links { gap: 1rem; }
-}
-
 .name-truncate {
     white-space: nowrap;
     overflow: hidden;
@@ -577,4 +580,128 @@ margin-bottom:unset;
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word;
+}
+
+/* ===== FLATPICKR CUSTOM THEME ===== */
+
+.flatpickr-calendar.custom {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.flatpickr-day {
+    color: var(--dark);
+    border-radius: 4px;
+}
+.flatpickr-day:hover:not(.selected):not(.disabled) {
+    background: var(--gold-light);
+    color: var(--dark);
+}
+.flatpickr-day.selected {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: var(--dark) !important;
+}
+.flatpickr-day.disabled {
+    color: var(--muted);
+    opacity: 0.6;
+}
+.flatpickr-day.today {
+    border-color: var(--gold-light);
+}
+
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+}
+
+.flatpickr-prev-month:hover svg,
+.flatpickr-next-month:hover svg {
+    fill: var(--dark) !important;
+}
+
+.flatpickr-prev-month, .flatpickr-next-month {
+    fill: var(--gold);
+}
+.flatpickr-prev-month:hover, .flatpickr-next-month:hover {
+    fill: var(--gold-light);
+}
+
+.flatpickr-months {
+    background: var(--cream);
+    padding: 0.3rem 0.4rem;
+    border-bottom: 1px solid var(--border);
+    border-radius: 8px 8px 0 0;
+}
+
+.flatpickr-monthDropdown-months {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--dark);
+    background: transparent !important;
+    border: none;
+    padding: 0.2rem 1.2rem 0.2rem 0.2rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    letter-spacing: 0.05em;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months{
+width: 65px;
+}
+
+.flatpickr-current-month input.cur-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--dark);
+    background: transparent !important;
+    border: none;
+    width: 50px;
+    padding: 0.2rem 0;
+    text-align: center;
+}
+.flatpickr-current-month input.cur-year::-webkit-outer-spin-button,
+.flatpickr-current-month input.cur-year::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    display: none;
+}
+
+.flatpickr-monthDropdown-months:focus,
+.flatpickr-current-month input.cur-year:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.flatpickr-weekday {
+    color: var(--muted);
+    font-weight: 400;
+}
+
+.flatpickr-input {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.7rem 0.95rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    color: var(--dark);
+}
+
+@media (max-width: 700px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .form-row  { grid-template-columns: 1fr; }
+    .hero h1   { font-size: 2.5rem; }
+    nav        { padding: 1rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a {font-size: 0.7rem; }
+    .nav-brand {font-size: 1rem; }
+    .dashboard-card {width: 100%; }
 }

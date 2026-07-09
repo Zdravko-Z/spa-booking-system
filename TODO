@@ -1,13 +1,11 @@
-for completed bookings to show status completed and to remove the cancel button
-
 to be able to choose the staff first
 
-functionality client to be able to edit bookings
+functionality client to be able to edit bookings - can be edit from both sides, can/might need to include a listener to trigger a notification to the other side for confirmation
 
 sort bookings by date and status
 
-treatments to be clickable for something(maybe to just enlarge it and see the full descriptionah)
+treatments to be clickable for something(maybe to just enlarge it and see the full description)
 
 option to select room
 
-add number of people to booking create
+to add records for repos where possible/needed
