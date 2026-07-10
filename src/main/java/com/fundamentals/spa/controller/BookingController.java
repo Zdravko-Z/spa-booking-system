@@ -2,21 +2,21 @@ package com.fundamentals.spa.controller;
 
 import com.fundamentals.spa.dto.AllBookings;
 import com.fundamentals.spa.dto.SpaBookingForm;
+import com.fundamentals.spa.entity.SecurityUser;
 import com.fundamentals.spa.entity.enums.UserRole;
 import com.fundamentals.spa.exception.SpaException;
 import com.fundamentals.spa.service.SpaBookingService;
 import com.fundamentals.spa.service.SpaStaffService;
 import com.fundamentals.spa.service.SpaTreatmentService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,8 +31,8 @@ public class BookingController {
     private final SpaStaffService spaStaffService;
 
     @GetMapping("/my-bookings")
-    public String myBookings(HttpSession session, Model model){
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public String myBookings(@AuthenticationPrincipal SecurityUser user, Model model){
+        UUID userId = user.getId();
         try {
             List<AllBookings> bookingList = spaBookingService.getAllForGuest(userId);
             model.addAttribute("bookingList", bookingList);
@@ -43,11 +43,10 @@ public class BookingController {
     }
 
     @PostMapping("/cancel/{id}")
-    public String cancel(@PathVariable UUID id,
-                         RedirectAttributes redirectAttributes,
-                         HttpSession session){
-        UUID userId = (UUID) session.getAttribute("user_id");
-        UserRole role = (UserRole) session.getAttribute("user_role");
+    public String cancel(@PathVariable UUID id, @AuthenticationPrincipal SecurityUser user,
+                         RedirectAttributes redirectAttributes){
+        UUID userId = user.getId();
+        UserRole role = user.getRole();
 
         spaBookingService.cancel(id, userId, role);
         redirectAttributes.addFlashAttribute("success", "Booking cancelled");
@@ -90,7 +89,7 @@ public class BookingController {
 
     @PostMapping("/create")
     public String createBooking(@Valid @ModelAttribute("bookingForm") SpaBookingForm bookingForm,
-                                BindingResult result, HttpSession session, Model model,
+                                BindingResult result, @AuthenticationPrincipal SecurityUser user, Model model,
                                 RedirectAttributes redirectAttributes){
         if (result.hasErrors()){
             model.addAttribute("bookingDate", bookingForm.getBookingDate());
@@ -100,7 +99,7 @@ public class BookingController {
             return "bookings/step2";
         }
 
-        UUID userId = (UUID) session.getAttribute("user_id");
+        UUID userId = user.getId();
 
         try {
             spaBookingService.create(bookingForm, userId);

@@ -1,7 +1,6 @@
 package com.fundamentals.spa.controller;
 
 import com.fundamentals.spa.dto.AllBookings;
-import com.fundamentals.spa.dto.SpaBookingDto;
 import com.fundamentals.spa.service.SpaBookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
