@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -16,7 +17,7 @@
             A sanctuary of calm. Expert therapists, curated treatments,
             and an atmosphere designed entirely around your wellbeing.
         </p>
-        <div th:unless="${session.user_role == T(com.fundamentals.spa.entity.enums.UserRole).ADMIN}"
+        <div sec:authorize="!hasRole('ADMIN')"
              class="hero-actions">
             <a class="hero-btn" th:href="@{/bookings/create}">Book Now</a>
         </div>
@@ -42,7 +43,7 @@
             <p>
                 Monday - Friday &nbsp;&nbsp; 09:00 - 20:00<br/>
                 Saturday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp10:00 - 18:00<br/>
-                Sunday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbspClosed
+                Sunday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Closed
             </p>
         </div>
         <div class="info-card">

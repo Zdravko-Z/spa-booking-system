@@ -64,7 +64,8 @@ nav {
     align-items: center;
 }
 
-.nav-links a {
+.nav-links a,
+ .nav-links button {
     color: #a8a29e;
     font-size: 0.84rem;
     letter-spacing: 0.12em;

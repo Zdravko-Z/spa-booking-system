@@ -42,15 +42,15 @@ public class UserService {
         return user.getId();
     }
 
-    public AuthDto login(LoginDto loginDto) {
-        User foundUser = getByUsername(loginDto.getUsername());
-
-        if (!passwordCheck(loginDto.getPassword(), foundUser.getPassword())){
-            throw new UsernameOrPasswordMismatch("Username or password is wrong");
-        }
-        log.info("User logged in {}", loginDto.getUsername());
-        return UserMapper.toAuthDto(foundUser);
-    }
+//    public AuthDto login(LoginDto loginDto) {
+//        User foundUser = getByUsername(loginDto.getUsername());
+//
+//        if (!passwordCheck(loginDto.getPassword(), foundUser.getPassword())){
+//            throw new UsernameOrPasswordMismatch("Username or password is wrong");
+//        }
+//        log.info("User logged in {}", loginDto.getUsername());
+//        return UserMapper.toAuthDto(foundUser);
+//    }
 
     public boolean passwordCheck(String input,String password){
         return passwordEncoder.matches(input, password);
