@@ -1,15 +1,18 @@
 package com.fundamentals.spa.service;
 
 import com.fundamentals.spa.dto.AllBookings;
+import com.fundamentals.spa.dto.NotificationRequest;
 import com.fundamentals.spa.dto.SpaBookingDto;
 import com.fundamentals.spa.dto.SpaBookingForm;
 import com.fundamentals.spa.entity.*;
 import com.fundamentals.spa.entity.enums.BookingStatus;
 import com.fundamentals.spa.entity.enums.UserRole;
 import com.fundamentals.spa.exception.*;
+import com.fundamentals.spa.feign.NotificationService;
 import com.fundamentals.spa.mapper.SpaBookingMapper;
 import com.fundamentals.spa.repository.SpaBookingRepository;
 import com.fundamentals.spa.repository.SpaBookingTreatmentRepository;
+import com.fundamentals.spa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,11 +20,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,6 +39,8 @@ public class SpaBookingService {
     private final SpaRoomService spaRoomService;
     private final SpaBookingTreatmentRepository spaBookingTreatmentRepository;
     private final SpaStaffService spaStaffService;
+    private final NotificationService notificationService;
+    private final UserRepository userRepository;
 
     public List<AllBookings> getAll(){
         int updated = spaBookingRepository.updateTodayCompletedBookings(
@@ -111,32 +118,12 @@ public class SpaBookingService {
         return List.of(time, closing);
     }
 
-    private List<String> generateSlots(LocalDate date) {
-        List<String> slots = new ArrayList<>();
-        LocalTime time;
-        if (date.equals(LocalDate.now())){
-            int minutes = LocalTime.now().getMinute();
-            int remainder = minutes % 30;
-            int add = (remainder == 0) ? 0 : 30 - remainder;
-            time = LocalTime.now().truncatedTo(ChronoUnit.MINUTES).plusMinutes(add);
-        }else {
-            time = workingHours(date).get(0);
-        }
-        LocalTime closing = workingHours(date).get(1);
-
-        while (time.isBefore(closing.minusMinutes(30))) {
-            slots.add(time.toString());
-            time = time.plusMinutes(30);
-        }
-        return slots;
-    }
-
-    public void create(SpaBookingForm dto, UUID user){
+    public void create(SpaBookingForm dto, UUID userId){
         if (dto.getTreatmentIds() == null || dto.getTreatmentIds().isEmpty()){
             throw new InvalidBookingStatusException("Please select at least one treatment");
         }
 
-        Guest guest = guestService.getByUser(user);
+        Guest guest = guestService.getByUser(userId);
 
         List<SpaTreatment> treatments = dto.getTreatmentIds().stream()
                 .map(spaTreatmentService::getEntityById)
@@ -200,6 +187,44 @@ public class SpaBookingService {
         booking.setTotalPrice(total);
 
         log.info("booking {} was created", booking.getId());
+
+        NotificationRequest request = NotificationRequest.builder()
+                .bookingId(booking.getId())
+                .userId(userId)
+                .email(userRepository.getEmailById(userId).orElseThrow(() -> new EmailNotPresent("Email was not found for user id: " + userId)))
+                .phone(guest.getPhone())
+                .confirmationCode(booking.getConfirmationCode())
+                .customerName(guest.getFirstName() + " " + guest.getLastName())
+                .appointmentTime(LocalDateTime.of(dto.getBookingDate(), dto.getStartTime()))
+                .treatmentName(treatments.stream().map(SpaTreatment::getName).collect(Collectors.joining(", ")))
+                .build();
+
+        try {
+            notificationService.sendConfirmation(request);
+            log.info("call to notification service was made");
+        } catch (Exception e) {
+            log.error("Failed to call notification service for booking {}: {}", booking.getId(), e.getMessage());
+        }
+    }
+
+    private List<String> generateSlots(LocalDate date) {
+        List<String> slots = new ArrayList<>();
+        LocalTime time;
+        if (date.equals(LocalDate.now())){
+            int minutes = LocalTime.now().getMinute();
+            int remainder = minutes % 30;
+            int add = (remainder == 0) ? 0 : 30 - remainder;
+            time = LocalTime.now().truncatedTo(ChronoUnit.MINUTES).plusMinutes(add);
+        }else {
+            time = workingHours(date).get(0);
+        }
+        LocalTime closing = workingHours(date).get(1);
+
+        while (time.isBefore(closing.minusMinutes(30))) {
+            slots.add(time.toString());
+            time = time.plusMinutes(30);
+        }
+        return slots;
     }
 
     private String generateConfirmationCode(){

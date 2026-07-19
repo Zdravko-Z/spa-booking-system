@@ -652,10 +652,6 @@ margin-bottom:unset;
     letter-spacing: 0.05em;
 }
 
-.flatpickr-current-month .flatpickr-monthDropdown-months{
-width: 65px;
-}
-
 .flatpickr-current-month input.cur-year {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.2rem;
