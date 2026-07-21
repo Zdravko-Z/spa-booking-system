@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Serenity Spa</title>
+    <title th:text="#{index.hero.title}">Serenity Spa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="hero">
-        <p class="hero-eyebrow">Welcome to</p>
-        <h1>Serenity Spa</h1>
-        <p class="hero-sub">
+        <p class="hero-eyebrow" th:text="#{index.hero.eyebrow}">Welcome to</p>
+        <h1 th:text="#{index.hero.title}">Serenity Spa</h1>
+        <p class="hero-sub" th:text="#{index.hero.sub}">
             A sanctuary of calm. Expert therapists, curated treatments,
             and an atmosphere designed entirely around your wellbeing.
         </p>
-        <div sec:authorize="!hasRole('ADMIN')"
-             class="hero-actions">
-            <a class="hero-btn" th:href="@{/bookings/create}">Book Now</a>
+        <div sec:authorize="!hasRole('ADMIN')" class="hero-actions">
+            <a class="hero-btn" th:href="@{/bookings/create}" th:text="#{index.hero.btn}">Book Now</a>
         </div>
     </div>
-    <h2 class="section-title">Our Treatments</h2>
+
+    <h2 class="section-title" th:text="#{index.treatments.title}">Our Treatments</h2>
     <div class="treatment-grid">
         <div th:each="t : ${treatments}" class="treatment-card">
             <h3 class="name-truncate" th:text="${t.name}">Treatment Name</h3>
@@ -34,35 +36,45 @@
             </div>
         </div>
         <div th:if="${#lists.isEmpty(treatments)}" class="empty-state" style="grid-column:1/-1;">
-            <p>No treatments available at the moment.</p>
+            <p th:text="#{index.treatments.empty}">No treatments available at the moment.</p>
         </div>
     </div>
+
     <div class="info-grid">
         <div class="info-card">
-            <p class="info-card-label">Opening Hours</p>
+            <p class="info-card-label" th:text="#{index.info.hours.title}">Opening Hours</p>
+            <div class="hours-list">
+                <div class="hours-row">
+                    <span th:text="#{index.info.hours.mon_fri}">Monday - Friday</span>
+                    <span>09:00 - 20:00</span>
+                </div>
+                <div class="hours-row">
+                    <span th:text="#{index.info.hours.sat}">Saturday</span>
+                    <span>10:00 - 18:00</span>
+                </div>
+                <div class="hours-row">
+                    <span th:text="#{index.info.hours.sun}">Sunday</span>
+                    <span th:text="#{index.info.hours.sun_closed}">Closed</span>
+                </div>
+            </div>
+        </div>
+        <div class="info-card">
+            <p class="info-card-label" th:text="#{index.info.location.title}">Location</p>
             <p>
-                Monday - Friday &nbsp;&nbsp; 09:00 - 20:00<br/>
-                Saturday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp10:00 - 18:00<br/>
-                Sunday &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;Closed
+                <span th:text="#{index.info.location.address}">123 Wellness Boulevard</span><br/>
+                <span th:text="#{index.info.location.city}">Varna, Bulgaria</span><br/>
+                <span>+359 88 000 0000</span>
             </p>
         </div>
         <div class="info-card">
-            <p class="info-card-label">Location</p>
+            <p class="info-card-label" th:text="#{index.info.promise.title}">Our Promise</p>
             <p>
-                123 Wellness Boulevard<br/>
-                Varna, Bulgaria<br/>
-                +359 88 000 0000
-            </p>
-        </div>
-        <div class="info-card">
-            <p class="info-card-label">Our Promise</p>
-            <p>
-                Every treatment is tailored to you.<br/>
-                Your comfort is our priority.<br/>
+                <span th:text="#{index.info.promise.line1}">Every treatment is tailored to you.</span><br/>
+                <span th:text="#{index.info.promise.line2}">Your comfort is our priority.</span><br/>
             </p>
         </div>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa — All rights reserved</footer>
 </body>
 </html>

@@ -1,42 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <title>Login — Serenity Spa</title>
+    <title th:text="#{login.title}">Login — Serenity Spa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="form-card">
-        <h1 class="form-title">Welcome Back</h1>
-        <p class="form-subtitle">Sign in to manage your bookings</p>
-        <div class="alert alert-error" th:if="${param.error != null}" th:text="'Invalid username or password'"></div>
+        <h1 class="form-title" th:text="#{login.title}">Welcome Back</h1>
+        <p class="form-subtitle" th:text="#{login.subtitle}">Sign in to manage your bookings</p>
+        <div class="alert alert-error" th:if="${param.error != null}" th:text="#{login.error}">Invalid username or password</div>
         <form th:action="@{/login}" method="post">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required placeholder="your username"/>
+                <label for="username" th:text="#{login.username}">Username</label>
+                <input type="text" id="username" name="username" required th:placeholder="#{login.username_placeholder}"/>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password" th:text="#{login.password}">Password</label>
                 <div class="password-field">
                     <input type="password" id="password" name="password" required placeholder="••••••••"/>
                     <span class="toggle-password" data-target="password">
-                                <i class="fa-regular fa-eye fa-fw"></i>
+                        <i class="fa-regular fa-eye fa-fw"></i>
                     </span>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;">Sign In</button>
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;" th:text="#{login.signin}">Sign In</button>
         </form>
         <p style="text-align:center; margin-top:1.5rem; font-size:0.84rem; color:var(--muted);">
-            Don't have an account?
-            <a th:href="@{/register}" style="color:var(--gold);">Register</a>
+            <span th:text="#{login.no_account}">Don't have an account?</span>
+            <a th:href="@{/register}" style="color:var(--gold);" th:text="#{nav.register}">Register</a>
         </p>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa — All rights reserved</footer>
 <script th:src="@{/js/password-toggle.js}"></script>
 </body>
 </html>

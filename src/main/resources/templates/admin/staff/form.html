@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Edit Staff — Serenity Spa</title>
+    <title th:text="#{staff.form.title}">Edit Staff — Serenity Spa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -11,36 +13,36 @@
 <main>
     <div class="container">
         <div class="form-card">
-            <h1 class="form-title">Edit Staff Member</h1>
-            <p class="form-subtitle">Update staff details and specialization</p>
+            <h1 class="form-title" th:text="#{staff.form.heading}">Edit Staff Member</h1>
+            <p class="form-subtitle" th:text="#{staff.form.subtitle}">Update staff details and specialization</p>
             <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
             <form th:action="@{/admin/staff/edit/{id}(id=${staffDto.id})}"
                   th:object="${staffDto}"
                   method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" th:field="*{firstName}" placeholder="e.g. Elena"/>
+                    <label th:text="#{staff.form.first_name}">First Name</label>
+                    <input type="text" th:field="*{firstName}" th:placeholder="#{staff.form.first_name_placeholder}"/>
                     <span class="field-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                 </div>
                 <div class="form-group">
-                    <label>Last Name</label>
-                    <input type="text" th:field="*{lastName}" placeholder="e.g. Todorova"/>
+                    <label th:text="#{staff.form.last_name}">Last Name</label>
+                    <input type="text" th:field="*{lastName}" th:placeholder="#{staff.form.last_name_placeholder}"/>
                     <span class="field-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
                 </div>
                 <div class="form-group">
-                    <label>Specialization</label>
-                    <input type="text" th:field="*{specialization}" placeholder="e.g. Deep Tissue & Hot Stone"/>
+                    <label th:text="#{staff.form.specialization}">Specialization</label>
+                    <input type="text" th:field="*{specialization}" th:placeholder="#{staff.form.specialization_placeholder}"/>
                     <span class="field-error" th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}"></span>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <a th:href="@{/admin/staff}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary" th:text="#{staff.form.submit}">Update</button>
+                    <a th:href="@{/admin/staff}" class="btn btn-secondary" th:text="#{staff.form.cancel}">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

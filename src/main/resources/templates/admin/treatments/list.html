@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Manage Treatments — Serenity Spa</title>
+    <title th:text="#{treatments.list.title}">Manage Treatments — Serenity Spa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="page-header">
-        <h1>Treatments</h1>
-        <a th:href="@{/admin/treatments/create}" class="btn btn-primary">Add New</a>
+        <h1 th:text="#{treatments.list.heading}">Treatments</h1>
+        <a th:href="@{/admin/treatments/create}" class="btn btn-primary" th:text="#{treatments.list.add_btn}">Add New</a>
     </div>
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
     <div th:if="${#lists.isEmpty(treatments)}" class="empty-state">
-        <p>No treatments found. <a th:href="@{/admin/treatments/create}">Add one</a></p>
+        <p th:text="#{treatments.list.empty}">No treatments found.</p>
+        <a th:href="@{/admin/treatments/create}" th:text="#{treatments.list.empty_link}">Add one</a>
     </div>
     <div th:if="not ${#lists.isEmpty(treatments)}" class="table-wrapper">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Duration</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th th:text="#{treatments.list.table.name}">Name</th>
+                <th th:text="#{treatments.list.table.duration}">Duration</th>
+                <th th:text="#{treatments.list.table.price}">Price</th>
+                <th th:text="#{treatments.list.table.status}">Status</th>
+                <th th:text="#{treatments.list.table.actions}">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -35,20 +38,20 @@
                 <td th:text="${t.durationMinutes} + ' min'"></td>
                 <td th:text="'€' + ${t.price}"></td>
                 <td>
-                        <span class="badge"
-                              th:classappend="${t.deleted} ? 'badge-deleted' : 'badge-active'"
-                              th:text="${t.deleted} ? 'Deleted' : 'Active'">
-                        </span>
+                    <span class="badge"
+                          th:classappend="${t.deleted} ? 'badge-deleted' : 'badge-active'"
+                          th:text="${t.deleted} ? #{treatments.list.status.deleted} : #{treatments.list.status.active}">
+                    </span>
                 </td>
                 <td class="td-actions">
-                    <a th:href="@{/admin/treatments/edit/{id}(id=${t.id})}" class="btn btn-warning btn-sm">Edit</a>
+                    <a th:href="@{/admin/treatments/edit/{id}(id=${t.id})}" class="btn btn-warning btn-sm" th:text="#{treatments.list.edit_btn}">Edit</a>
 
                     <form th:action="${t.deleted} ? @{/admin/treatments/restore/{id}(id=${t.id})} : @{/admin/treatments/delete/{id}(id=${t.id})}"
                           method="post" class="inline-form">
                         <button type="submit"
                                 th:class="${t.deleted} ? 'btn btn-gold btn-sm' : 'btn btn-danger btn-sm'"
-                                th:text="${t.deleted} ? 'Restore' : 'Delete'"
-                                th:onclick="${t.deleted} ? 'return confirm(\'Restore this treatment?\')' : 'return confirm(\'Delete this treatment?\')'">
+                                th:text="${t.deleted} ? #{treatments.list.restore_btn} : #{treatments.list.delete_btn}"
+                                th:onclick="${t.deleted} ? 'return confirm([[#{treatments.list.restore_confirm}]])' : 'return confirm([[#{treatments.list.delete_confirm}]])'">
                         </button>
                     </form>
                 </td>
@@ -57,6 +60,6 @@
         </table>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

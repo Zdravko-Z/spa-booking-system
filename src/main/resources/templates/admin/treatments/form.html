@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title th:text="${treatmentDto.id == null ? 'Add Treatment' : 'Edit Treatment'}">Treatment Form</title>
+    <title th:text="${treatmentDto.id == null ? #messages.msg('treatment.form.title.add') : #messages.msg('treatment.form.title.edit')}">Treatment Form</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -11,41 +13,41 @@
 <main>
     <div class="container">
         <div class="form-card">
-            <h1 class="form-title" th:text="${treatmentDto.id == null ? 'Add Treatment' : 'Edit Treatment'}">Add Treatment</h1>
-            <p class="form-subtitle" th:text="${treatmentDto.id == null ? 'Create a new treatment' : 'Update treatment details'}">Create a new treatment</p>
+            <h1 class="form-title" th:text="${treatmentDto.id == null ? #messages.msg('treatment.form.heading.add') : #messages.msg('treatment.form.heading.edit')}">Add Treatment</h1>
+            <p class="form-subtitle" th:text="${treatmentDto.id == null ? #messages.msg('treatment.form.subtitle.add') : #messages.msg('treatment.form.subtitle.edit')}">Create a new treatment</p>
             <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
             <form th:action="${treatmentDto.id == null ? '/admin/treatments/create' : '/admin/treatments/edit/' + treatmentDto.id}"
                   th:object="${treatmentDto}"
                   method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" th:field="*{name}" placeholder="e.g. Deep Tissue Massage"/>
+                    <label th:text="#{treatment.form.name}">Name</label>
+                    <input type="text" th:field="*{name}" th:placeholder="#{treatment.form.name_placeholder}"/>
                     <span class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                 </div>
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea th:field="*{description}" rows="3" placeholder="Brief description"></textarea>
+                    <label th:text="#{treatment.form.description}">Description</label>
+                    <textarea th:field="*{description}" rows="3" th:placeholder="#{treatment.form.description_placeholder}"></textarea>
                     <span class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                 </div>
                 <div class="form-group">
-                    <label>Duration (minutes)</label>
-                    <input type="number" th:field="*{durationMinutes}" placeholder="60" min="1"/>
+                    <label th:text="#{treatment.form.duration}">Duration (minutes)</label>
+                    <input type="number" th:field="*{durationMinutes}" th:placeholder="#{treatment.form.duration_placeholder}" min="1"/>
                     <span class="field-error" th:if="${#fields.hasErrors('durationMinutes')}" th:errors="*{durationMinutes}"></span>
                 </div>
                 <div class="form-group">
-                    <label>Price (€)</label>
-                    <input type="number" step="0.01" th:field="*{price}" placeholder="60.00" min="0.01"/>
+                    <label th:text="#{treatment.form.price}">Price (€)</label>
+                    <input type="number" step="0.01" th:field="*{price}" th:placeholder="#{treatment.form.price_placeholder}" min="0.01"/>
                     <span class="field-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" th:text="${treatmentDto.id == null ? 'Create' : 'Update'}">Save</button>
-                    <a th:href="@{/admin/treatments}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary" th:text="${treatmentDto.id == null ? #messages.msg('treatment.form.submit.add') : #messages.msg('treatment.form.submit.edit')}">Save</button>
+                    <a th:href="@{/admin/treatments}" class="btn btn-secondary" th:text="#{treatment.form.cancel}">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

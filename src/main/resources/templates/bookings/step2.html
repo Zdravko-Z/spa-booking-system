@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Book a Treatment — Serenity Spa</title>
+    <title th:text="#{booking.step2.title}">Book a Treatment — Serenity Spa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="form-card form-card-wide">
-        <h1 class="form-title">Book a Treatment</h1>
+        <h1 class="form-title" th:text="#{booking.step2.heading}">Book a Treatment</h1>
         <p class="form-subtitle">
-            Step 2 of 2 —
+            <span th:text="#{booking.step2.subtitle}">Step 2 of 2 —</span>
             <span th:text="${#temporals.format(bookingDate, 'dd MMM yyyy')}"></span>
-            <a th:href="@{/bookings/create}">Change date</a>
+            <a th:href="@{/bookings/create}" th:text="#{booking.step2.change_date}">Change date</a>
         </p>
         <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
         <form th:action="@{/bookings/create}" th:object="${bookingForm}" method="post">
             <input type="hidden" name="bookingDate" th:value="${bookingDate}"/>
             <div class="form-group">
-                <label for="startTime">Available Time</label>
+                <label for="startTime" th:text="#{booking.step2.time_label}">Available Time</label>
                 <select id="startTime" th:field="*{startTime}" required>
-                    <option value="">-- Select a time --</option>
+                    <option value="" th:text="#{booking.step2.time_placeholder}">-- Select a time --</option>
                     <option th:each="slot : ${availableSlots}"
                             th:value="${slot}" th:text="${slot}"></option>
                 </select>
@@ -30,9 +32,9 @@
                       th:errors="*{startTime}"></span>
             </div>
             <div class="form-group">
-                <label>Select Treatments</label>
+                <label th:text="#{booking.step2.treatments_label}">Select Treatments</label>
                 <div th:if="${#lists.isEmpty(treatments)}" class="empty-state">
-                    <p>No treatments available right now.</p>
+                    <p th:text="#{booking.step2.treatments_empty}">No treatments available right now.</p>
                 </div>
                 <div th:each="treatment : ${treatments}" class="treatment-selectable">
                     <input type="checkbox"
@@ -52,9 +54,9 @@
                       th:errors="*{treatmentIds}"></span>
             </div>
             <div class="form-group">
-                <label for="staffId">Therapist (optional)</label>
+                <label for="staffId" th:text="#{booking.step2.therapist_label}">Therapist (optional)</label>
                 <select id="staffId" th:field="*{staffId}">
-                    <option value="">-- No preference --</option>
+                    <option value="" th:text="#{booking.step2.therapist_placeholder}">-- No preference --</option>
                     <option th:each="staff : ${staffList}"
                             th:value="${staff.id}"
                             th:text="${staff.firstName + ' ' + staff.lastName +
@@ -63,16 +65,16 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="notes">Notes (optional)</label>
+                <label for="notes" th:text="#{booking.step2.notes_label}">Notes (optional)</label>
                 <textarea id="notes" th:field="*{notes}"
-                          placeholder="Any preferences or special requests..."></textarea>
+                          th:placeholder="#{booking.step2.notes_placeholder}"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;">
+            <button type="submit" class="btn btn-primary" style="width:100%;" th:text="#{booking.step2.submit}">
                 Confirm Booking
             </button>
         </form>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

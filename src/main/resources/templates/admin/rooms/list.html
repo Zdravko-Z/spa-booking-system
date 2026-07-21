@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Manage Rooms — Serenity Spa</title>
+    <title th:text="#{rooms.list.title}">Manage Rooms — Serenity Spa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -11,21 +13,21 @@
 <main>
     <div class="container">
         <div class="page-header">
-            <h1>Rooms</h1>
+            <h1 th:text="#{rooms.list.heading}">Rooms</h1>
         </div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
         <div th:if="${#lists.isEmpty(rooms)}" class="empty-state">
-            <p>No rooms found.</p>
+            <p th:text="#{rooms.list.empty}">No rooms found.</p>
         </div>
         <div th:if="not ${#lists.isEmpty(rooms)}" class="table-wrapper">
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Capacity</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th th:text="#{rooms.list.table.name}">Name</th>
+                    <th th:text="#{rooms.list.table.capacity}">Capacity</th>
+                    <th th:text="#{rooms.list.table.status}">Status</th>
+                    <th th:text="#{rooms.list.table.actions}">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,13 +35,17 @@
                     <td th:text="${room.name}"></td>
                     <td th:text="${room.capacity}"></td>
                     <td>
-                            <span class="badge"
-                                  th:classappend="${'badge-' + room.status.name().toLowerCase()}"
-                                  th:text="${room.status}">
+                        <span class="badge"
+                              th:classappend="${'badge-' + room.status.name().toLowerCase()}">
+                            <span th:switch="${room.status.name()}">
+                                <span th:case="'AVAILABLE'" th:text="#{rooms.list.status.available}">Available</span>
+                                <span th:case="'MAINTENANCE'" th:text="#{rooms.list.status.maintenance}">Maintenance</span>
+                                <span th:case="*" th:text="${room.status}"></span>
                             </span>
+                        </span>
                     </td>
                     <td>
-                        <a th:href="@{/admin/rooms/edit/{id}(id=${room.id})}" class="btn btn-warning btn-sm">Edit</a>
+                        <a th:href="@{/admin/rooms/edit/{id}(id=${room.id})}" class="btn btn-warning btn-sm" th:text="#{rooms.list.edit_btn}">Edit</a>
                     </td>
                 </tr>
                 </tbody>
@@ -47,6 +53,6 @@
         </div>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

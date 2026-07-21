@@ -3,49 +3,49 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Admin Dashboard — Serenity Spa</title>
+    <title th:text="#{dashboard.title}">Admin Dashboard — Serenity Spa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="page-header">
-        <h1>Admin Dashboard</h1>
-        <p>Manage bookings, treatments, rooms and staff</p>
+        <h1 th:text="#{dashboard.heading}">Admin Dashboard</h1>
+        <p th:text="#{dashboard.subheading}">Manage bookings, treatments, rooms and staff</p>
     </div>
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
     <div class="quick-links dashboard-card">
         <a th:href="@{/admin/treatments}" class="treatment-card dashboard-card">
             <span class="icon">💆</span>
-            <span class="label">Treatments</span>
-            <span class="desc">Add, edit, or remove</span>
+            <span class="label" th:text="#{dashboard.card.treatments.label}">Treatments</span>
+            <span class="desc" th:text="#{dashboard.card.treatments.desc}">Add, edit, or remove</span>
         </a>
         <a th:href="@{/admin/rooms}" class="treatment-card dashboard-card">
             <span class="icon">🛏️</span>
-            <span class="label">Rooms</span>
-            <span class="desc">Manage rooms & availability</span>
+            <span class="label" th:text="#{dashboard.card.rooms.label}">Rooms</span>
+            <span class="desc" th:text="#{dashboard.card.rooms.desc}">Manage rooms & availability</span>
         </a>
         <a th:href="@{/admin/staff}" class="treatment-card dashboard-card">
             <span class="icon">👩‍⚕️</span>
-            <span class="label">Staff</span>
-            <span class="desc">Therapists & specializations</span>
+            <span class="label" th:text="#{dashboard.card.staff.label}">Staff</span>
+            <span class="desc" th:text="#{dashboard.card.staff.desc}">Therapists & specializations</span>
         </a>
     </div>
-    <h2 class="section-title" style="text-align:left; font-size:1.4rem; margin-bottom:1rem;">All Bookings</h2>
+    <h2 class="section-title" style="text-align:left; font-size:1.4rem; margin-bottom:1rem;" th:text="#{dashboard.bookings.title}">All Bookings</h2>
     <div class="table-wrapper">
         <table>
             <thead>
             <tr>
-                <th>Code</th>
-                <th>Guest</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Masseuse</th>
-                <th>Room</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th th:text="#{dashboard.bookings.table.code}">Code</th>
+                <th th:text="#{dashboard.bookings.table.guest}">Guest</th>
+                <th th:text="#{dashboard.bookings.table.date}">Date</th>
+                <th th:text="#{dashboard.bookings.table.time}">Time</th>
+                <th th:text="#{dashboard.bookings.table.masseuse}">Masseuse</th>
+                <th th:text="#{dashboard.bookings.table.room}">Room</th>
+                <th th:text="#{dashboard.bookings.table.total}">Total</th>
+                <th th:text="#{dashboard.bookings.table.status}">Status</th>
+                <th th:text="#{dashboard.bookings.table.actions}">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -61,32 +61,40 @@
                     <span th:if="${booking.staffFirstName != null}"
                           th:text="${booking.staffFirstName + ' ' + booking.staffLastName}">
                     </span>
-                    <span th:unless="${booking.staffFirstName != null}" class="text-muted">Not assigned</span>
+                    <span th:unless="${booking.staffFirstName != null}" class="text-muted" th:text="#{dashboard.bookings.not_assigned}">Not assigned</span>
                 </td>
                 <td th:text="${booking.roomName}">The Lotus Room</td>
                 <td th:text="'€' + ${booking.totalPrice}">€60.00</td>
                 <td>
                     <span class="badge"
-                          th:classappend="${'badge-' + booking.status.name().toLowerCase()}"
-                          th:text="${booking.status}"></span>
+                          th:classappend="${'badge-' + booking.status.name().toLowerCase()}">
+                        <span th:switch="${booking.status.name()}">
+                            <span th:case="'PENDING'" th:text="#{booking.status.pending}">pending</span>
+                            <span th:case="'CONFIRMED'" th:text="#{booking.status.confirmed}">Confirmed</span>
+                            <span th:case="'CANCELLED'" th:text="#{booking.status.cancelled}">Cancelled</span>
+                            <span th:case="'COMPLETED'" th:text="#{booking.status.completed}">Completed</span>
+                            <span th:case="*" th:text="${booking.status}"></span>
+                        </span>
+                    </span>
                 </td>
                 <td>
                     <form th:if="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}"
                           th:action="@{/bookings/cancel/{id}(id=${booking.id})}" method="post">
                         <button type="submit" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Cancel this booking?')">Cancel
+                                th:text="#{dashboard.bookings.cancel_btn}"
+                                onclick="return confirm([[#{dashboard.bookings.cancel_confirm}]])">Cancel
                         </button>
                     </form>
                     <span th:unless="${booking.status == T(com.fundamentals.spa.entity.enums.BookingStatus).PENDING}"></span>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(bookings)}">
-                <td colspan="9" class="empty-state">No bookings found.</td>
+                <td colspan="9" class="empty-state" th:text="#{dashboard.bookings.empty}">No bookings found.</td>
             </tr>
             </tbody>
         </table>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>

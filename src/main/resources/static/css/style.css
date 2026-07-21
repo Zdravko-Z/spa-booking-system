@@ -439,6 +439,63 @@ margin-bottom:unset;
 
 .info-card p { font-size: 0.96rem; line-height: 2; color: var(--muted); }
 
+.hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.96rem;
+    line-height: 2;
+    color: var(--muted);
+}
+
+.hours-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hours-row span:first-child {
+    text-align: left;
+}
+
+.hours-row span:last-child {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Language Switcher Toggle */
+.language-switcher {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.5rem;
+}
+
+.lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #a8a29e;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    border: 1px solid transparent;
+}
+
+.lang-toggle:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--gold-light);
+    border-color: var(--gold-light);
+}
+
+.lang-toggle .lang-code {
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
 .treatment-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

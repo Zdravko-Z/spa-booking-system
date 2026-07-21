@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Register — Serenity Spa</title>
+    <title th:text="#{register.title}">Register — Serenity Spa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
@@ -11,77 +13,77 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="form-card form-card-wide">
-        <h1 class="form-title">Create Account</h1>
-        <p class="form-subtitle">Join us and start booking treatments</p>
+        <h1 class="form-title" th:text="#{register.title}">Create Account</h1>
+        <p class="form-subtitle" th:text="#{register.subtitle}">Join us and start booking treatments</p>
         <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
         <form th:action="@{/register}" th:object="${registerDto}" method="post">
             <div class="form-row">
                 <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" th:field="*{firstName}" placeholder="Ana"/>
+                    <label th:text="#{register.first_name}">First Name</label>
+                    <input type="text" th:field="*{firstName}" th:placeholder="#{register.first_name_placeholder}"/>
                     <span class="field-error" th:if="${#fields.hasErrors('firstName')}"
                           th:errors="*{firstName}"></span>
                 </div>
                 <div class="form-group">
-                    <label>Last Name</label>
-                    <input type="text" th:field="*{lastName}" placeholder="Ivanova"/>
+                    <label th:text="#{register.last_name}">Last Name</label>
+                    <input type="text" th:field="*{lastName}" th:placeholder="#{register.last_name_placeholder}"/>
                     <span class="field-error" th:if="${#fields.hasErrors('lastName')}"
                           th:errors="*{lastName}"></span>
                 </div>
             </div>
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" th:field="*{username}" placeholder="ana.ivanova"/>
+                <label th:text="#{register.username}">Username</label>
+                <input type="text" th:field="*{username}" th:placeholder="#{register.username_placeholder}"/>
                 <span class="field-error" th:if="${#fields.hasErrors('username')}"
                       th:errors="*{username}"></span>
             </div>
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" th:field="*{email}" placeholder="ana@example.com"/>
+                <label th:text="#{register.email}">Email</label>
+                <input type="email" th:field="*{email}" th:placeholder="#{register.email_placeholder}"/>
                 <span class="field-error" th:if="${#fields.hasErrors('email')}"
                       th:errors="*{email}"></span>
             </div>
             <div class="form-group">
-                <label>Phone</label>
+                <label th:text="#{register.phone}">Phone</label>
                 <input type="text" th:field="*{phone}" placeholder="0888123456"/>
                 <span class="field-error" th:if="${#fields.hasErrors('phone')}"
                       th:errors="*{phone}"></span>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Password</label>
+                    <label th:text="#{register.password}">Password</label>
                     <div class="password-field">
                         <input type="password" id="password" th:field="*{password}" placeholder="••••••••"/>
                         <span class="toggle-password" data-target="password">
-                                    <i class="fa-regular fa-eye fa-fw"></i>
+                            <i class="fa-regular fa-eye fa-fw"></i>
                         </span>
                     </div>
                     <span class="field-error" th:if="${#fields.hasErrors('password')}"
                           th:errors="*{password}"></span>
                 </div>
                 <div class="form-group">
-                    <label>Confirm Password</label>
+                    <label th:text="#{register.confirm_password}">Confirm Password</label>
                     <div class="password-field">
                         <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="••••••••"/>
                         <span class="toggle-password" data-target="confirmPassword">
                             <i class="fa-regular fa-eye fa-fw"></i>
                         </span>
                     </div>
-                    <span class="field-error" th:if="${#fields.hasErrors('passwordMatching')}"
-                          th:errors="*{passwordMatching}"></span>
+                    <span class="field-error" th:if="${#fields.hasErrors('confirmPassword')}"
+                          th:errors="*{confirmPassword}"></span>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;">
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;" th:text="#{register.create_account}">
                 Create Account
             </button>
         </form>
         <p style="text-align:center; margin-top:1.5rem; font-size:0.84rem; color:var(--muted);">
-            Already have an account?
-            <a th:href="@{/login}" style="color:var(--gold);">Sign in</a>
+            <span th:text="#{register.have_account}">Already have an account?</span>
+            <a th:href="@{/login}" style="color:var(--gold);" th:text="#{login.signin}">Sign in</a>
         </p>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 <script th:src="@{/js/password-toggle.js}"></script>
 </body>
 </html>

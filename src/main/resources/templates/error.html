@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Something went wrong — Serenity Spa</title>
+    <title th:text="#{error.title}">Something went wrong — Serenity Spa</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -11,15 +13,15 @@
 <main>
     <div class="container">
         <div class="page-header">
-            <h1>Oops!</h1>
-            <p>We encountered an unexpected issue</p>
+            <h1 th:text="#{error.heading}">Oops!</h1>
+            <p th:text="#{error.subheading}">We encountered an unexpected issue</p>
         </div>
-        <div class="alert alert-error" th:text="${error}">An unexpected error occurred.</div>
+        <div class="alert alert-error" th:text="${error} ?: #{error.general}">An unexpected error occurred.</div>
         <div style="text-align: center; margin-top: 2rem;">
-            <a th:href="@{/}" class="btn btn-primary">Return to Home</a>
+            <a th:href="@{/}" class="btn btn-primary" th:text="#{error.return_home}">Return to Home</a>
         </div>
     </div>
 </main>
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa — All rights reserved</footer>
 </body>
 </html>

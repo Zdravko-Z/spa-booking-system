@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale.language}"
+      lang="${#locale.language}">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <title>Book a Treatment — Serenity Spa</title>
+    <title th:text="#{booking.step1.title}">Book a Treatment — Serenity Spa</title>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 <main>
     <div class="form-card">
-        <h1 class="form-title">Book a Treatment</h1>
-        <p class="form-subtitle">Step 1 of 2 — Select a date</p>
+        <h1 class="form-title" th:text="#{booking.step1.heading}">Book a Treatment</h1>
+        <p class="form-subtitle" th:text="#{booking.step1.subtitle}">Step 1 of 2 — Select a date</p>
 
         <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
 
         <form th:action="@{/bookings/create/select-slots}" method="post">
             <div class="form-group">
-                <label for="bookingDate">Date</label>
-                <input type="text" id="bookingDate" name="bookingDate" th:min="${today}" placeholder="Select a date"
-                       required/>
+                <label for="bookingDate" th:text="#{booking.step1.date_label}">Date</label>
+                <input type="text" id="bookingDate" name="bookingDate" th:min="${today}"
+                       th:placeholder="#{booking.step1.date_placeholder}" required/>
                 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
                 <script>
                     flatpickr("#bookingDate", {
@@ -38,13 +40,13 @@
                     });
                 </script>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;">
+            <button type="submit" class="btn btn-primary" style="width:100%;" th:text="#{booking.step1.submit}">
                 See Available Times
             </button>
         </form>
     </div>
 </main>
 
-<footer>&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
+<footer th:text="#{index.footer.copyright}">&copy; 2026 Serenity Spa &nbsp;&mdash;&nbsp; All rights reserved</footer>
 </body>
 </html>
