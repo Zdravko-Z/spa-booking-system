@@ -17,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +31,7 @@ public class BookingController {
     private final SpaBookingService spaBookingService;
     private final SpaTreatmentService spaTreatmentService;
     private final SpaStaffService spaStaffService;
+    private final Clock clock;
 
     @GetMapping("/my-bookings")
     public String myBookings(@AuthenticationPrincipal SecurityUser user, Model model){
@@ -59,7 +62,7 @@ public class BookingController {
 
     @GetMapping("/create")
     public String datePicker(Model model){
-        model.addAttribute("today", LocalDate.now());
+        model.addAttribute("today", LocalDate.now(clock));
         return "bookings/step1";
     }
 
@@ -67,14 +70,14 @@ public class BookingController {
     public String selectSlots(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")
                               LocalDate bookingDate, Model model){
         if (bookingDate.isBefore(LocalDate.now()) || bookingDate.getDayOfWeek() == DayOfWeek.SUNDAY){
-            model.addAttribute("today", LocalDate.now());
+            model.addAttribute("today", LocalDate.now(clock));
             model.addAttribute("error", "Please select a valid date");
             return "bookings/step1";
         }
 
         List<String> slots = spaBookingService.getAvailableSlotsForDate(bookingDate);
         if (slots.isEmpty()){
-            model.addAttribute("today", LocalDate.now());
+            model.addAttribute("today", LocalDate.now(clock));
             model.addAttribute("error", "No available slots for this date. Please pick a different date");
             return "bookings/step1";
         }

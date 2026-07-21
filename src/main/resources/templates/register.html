@@ -67,8 +67,8 @@
                             <i class="fa-regular fa-eye fa-fw"></i>
                         </span>
                     </div>
-                    <span class="field-error" th:if="${#fields.hasErrors('confirmPassword')}"
-                          th:errors="*{confirmPassword}"></span>
+                    <span class="field-error" th:if="${#fields.hasErrors('passwordMatching')}"
+                          th:errors="*{passwordMatching}"></span>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.5rem;">

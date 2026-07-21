@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -41,11 +42,12 @@ public class SpaBookingService {
     private final SpaStaffService spaStaffService;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
+    private final Clock clock;
 
     public List<AllBookings> getAll(){
         int updated = spaBookingRepository.updateTodayCompletedBookings(
                 BookingStatus.PENDING, BookingStatus.COMPLETED,
-                LocalDate.now(), LocalTime.now()
+                LocalDate.now(clock), LocalTime.now(clock)
         );
         log.info("Updated status of {} bookings", updated);
         return spaBookingRepository.findBookingSummaries();
@@ -65,7 +67,7 @@ public class SpaBookingService {
         }
         int updated = spaBookingRepository.updateTodayCompletedBookings(
                 BookingStatus.PENDING, BookingStatus.COMPLETED,
-                LocalDate.now(), LocalTime.now()
+                LocalDate.now(clock), LocalTime.now(clock)
         );
         log.info("updated status of {} bookings", updated);
         return spaBookingRepository.findSummariesByGuest(guest);
@@ -88,7 +90,7 @@ public class SpaBookingService {
         if (booking.getStatus() == BookingStatus.CANCELLED){
             log.info("booking {} is already cancelled", bookingId);
             throw new InvalidBookingStatusException("Booking is already cancelled");
-        }else if(booking.getBookingDate().isBefore(LocalDate.now())){
+        }else if(booking.getBookingDate().isBefore(LocalDate.now(clock))){
             log.info("booking {} is already complete", bookingId);
             throw new SpaException("Booking already complete");
         }
@@ -103,19 +105,6 @@ public class SpaBookingService {
         List<String> takenSlots = spaBookingRepository.findTakenSlots(date).stream().map(LocalTime::toString).toList();
         allSlots.removeAll(takenSlots);
         return allSlots;
-    }
-
-    private List<LocalTime> workingHours(LocalDate date){
-        LocalTime time;
-        LocalTime closing;
-        if (date.getDayOfWeek().getValue() == 6){
-            time = LocalTime.of(10, 0);
-            closing = LocalTime.of(18, 0);
-        }else {
-            time = LocalTime.of(9, 0);
-            closing = LocalTime.of(20, 0);
-        }
-        return List.of(time, closing);
     }
 
     public void create(SpaBookingForm dto, UUID userId){
@@ -210,11 +199,11 @@ public class SpaBookingService {
     private List<String> generateSlots(LocalDate date) {
         List<String> slots = new ArrayList<>();
         LocalTime time;
-        if (date.equals(LocalDate.now())){
-            int minutes = LocalTime.now().getMinute();
+        if (date.equals(LocalDate.now(clock))){
+            int minutes = LocalTime.now(clock).getMinute();
             int remainder = minutes % 30;
             int add = (remainder == 0) ? 0 : 30 - remainder;
-            time = LocalTime.now().truncatedTo(ChronoUnit.MINUTES).plusMinutes(add);
+            time = LocalTime.now(clock).truncatedTo(ChronoUnit.MINUTES).plusMinutes(add);
         }else {
             time = workingHours(date).get(0);
         }
@@ -236,8 +225,21 @@ public class SpaBookingService {
     @Scheduled(cron = "0 0 23 * * MON-SAT")
     public void setStatusCompleted(){
         int updated = spaBookingRepository.updatePastBookings(BookingStatus.PENDING,
-                BookingStatus.COMPLETED, LocalDate.now());
+                BookingStatus.COMPLETED, LocalDate.now(clock));
 
         log.info("Changed {} to completed", updated);
+    }
+
+    private List<LocalTime> workingHours(LocalDate date){
+        LocalTime time;
+        LocalTime closing;
+        if (date.getDayOfWeek().getValue() == 6){
+            time = LocalTime.of(10, 0);
+            closing = LocalTime.of(18, 0);
+        }else {
+            time = LocalTime.of(9, 0);
+            closing = LocalTime.of(20, 0);
+        }
+        return List.of(time, closing);
     }
 }

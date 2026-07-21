@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "notification-service", url = "${services.notification.url}")
 public interface NotificationService {
-    @PostMapping("api/v1/notifications/confirmation")
+    @PostMapping("/api/v1/notifications/confirmation")
     void sendConfirmation(@RequestBody NotificationRequest request);
 }

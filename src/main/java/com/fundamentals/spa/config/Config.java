@@ -7,12 +7,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.time.Clock;
+import java.time.ZoneId;
+
 @Configuration
 public class Config {
+    public static final ZoneId SPA_ZONE = ZoneId.of("Europe/Sofia");
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Clock spaClock() {
+        return Clock.system(SPA_ZONE);
     }
 
     @Bean

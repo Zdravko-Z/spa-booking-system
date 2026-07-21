@@ -1,5 +1,6 @@
 package com.fundamentals.spa.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -21,7 +22,7 @@ public class RegisterDto {
     @Size(max = 100, message = "Email must not be more than 100 characters")
     private String email;
 
-    @NotBlank(message = "Password must not be blank")
+//    @NotBlank(message = "Password must not be blank")
     @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
     private String password;
 
@@ -38,4 +39,10 @@ public class RegisterDto {
 
     @Pattern(regexp = "^0\\d{9}$", message = "Invalid phone number")
     private String phone;
+
+    @AssertTrue(message = "Passwords do not match")
+    @JsonIgnore
+    public boolean isPasswordMatching() {
+        return password != null && password.equals(confirmPassword);
+    }
 }

@@ -1,10 +1,8 @@
 package com.fundamentals.spa.service;
 
-import com.fundamentals.spa.dto.AuthDto;
-import com.fundamentals.spa.dto.LoginDto;
 import com.fundamentals.spa.exception.EmailAlreadyUsedException;
+import com.fundamentals.spa.exception.SpaException;
 import com.fundamentals.spa.exception.SpaUserNotFound;
-import com.fundamentals.spa.exception.UsernameOrPasswordMismatch;
 import com.fundamentals.spa.mapper.UserMapper;
 import com.fundamentals.spa.dto.RegisterDto;
 import com.fundamentals.spa.entity.User;
@@ -35,24 +33,14 @@ public class UserService {
             throw new EmailAlreadyUsedException("Email is already used");
         }
 
+        if (!dto.getPassword().equals(dto.getConfirmPassword())){
+            throw new SpaException("Passwords do not match");
+        }
+
         User user = UserMapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         userRepository.save(user);
         log.info("User registered {}", dto.getId());
         return user.getId();
-    }
-
-//    public AuthDto login(LoginDto loginDto) {
-//        User foundUser = getByUsername(loginDto.getUsername());
-//
-//        if (!passwordCheck(loginDto.getPassword(), foundUser.getPassword())){
-//            throw new UsernameOrPasswordMismatch("Username or password is wrong");
-//        }
-//        log.info("User logged in {}", loginDto.getUsername());
-//        return UserMapper.toAuthDto(foundUser);
-//    }
-
-    public boolean passwordCheck(String input,String password){
-        return passwordEncoder.matches(input, password);
     }
 }

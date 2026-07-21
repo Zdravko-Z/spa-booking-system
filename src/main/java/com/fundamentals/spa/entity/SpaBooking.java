@@ -7,8 +7,8 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -47,10 +47,10 @@ public class SpaBooking {
     private String notes;
 
     @Column(name = "added_at", nullable = false)
-    private LocalDateTime addedAt;
+    private Instant addedAt;
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "guest_id", nullable = false)
@@ -67,12 +67,12 @@ public class SpaBooking {
 
     @PrePersist
     protected void onCreate() {
-        addedAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        addedAt = Instant.now();
+        updatedAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = Instant.now();
     }
 }
